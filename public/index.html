@@ -3,23 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Truco Argentino</title>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-C6QJFEKLTN"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-C6QJFEKLTN');
-    </script>
-	
+  <title>Conquest</title>
     <script src="wasm/wasm_exec.js"></script>
 	<script>
         const go = new Go(); // Defined in wasm_exec.js
         const WASM_URL = 'wasm/wasm.wasm';
 
         var wasm;
-        let trucoState;
+        let conquestState;
         let humanPlayerID = 0;
         let lastRoundNumber = 1;
         let wasmReady = false;
@@ -45,21 +36,21 @@
         function jsRunAction(data) {
             const encoder = new TextEncoder();
             const encodedData = encoder.encode(JSON.stringify(data));
-            const result = trucoRunAction(encodedData);
+            const result = conquestRunAction(encodedData);
             const json = new TextDecoder().decode(result);
             return JSON.parse(json);
         }
 
         function jsBotRunAction() {
-            const result = trucoBotRunAction();
+            const result = conquestBotRunAction();
             const json = new TextDecoder().decode(result);
             return JSON.parse(json);
         }
 
-        function jsTrucoNew(rules) {
+        function jsConquestNew(rules) {
             const encoder = new TextEncoder();
             const encodedData = encoder.encode(JSON.stringify(rules));
-            const result = trucoNew(encodedData);
+            const result = conquestNew(encodedData);
             const json = new TextDecoder().decode(result);
             return JSON.parse(json);
         }

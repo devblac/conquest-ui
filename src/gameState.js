@@ -7,7 +7,7 @@ export class GameStateManager {
     }
 
     start({maxPoints, isFlorEnabled}) {
-        this.gameState = jsTrucoNew({maxPoints, isFlorEnabled});
+        this.gameState = jsConquestNew({debug:true});
         return this.gameState;
     }
 

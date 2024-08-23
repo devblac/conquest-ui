@@ -34,6 +34,7 @@ function Game({manager}) {
   }
 
   const gameState = manager.gameState;
+  console.error('gameState ', gameState);
   const isHumanTurn = gameState.turnPlayerID === 0;
   const isBotTurn = gameState.turnPlayerID === 1;
   const confirmRoundFinishedAction = gameState.possibleActions.find(action => action.name === "confirm_round_finished");
@@ -232,7 +233,7 @@ export default function GameLandingPage() {
             It's built to be easily extensible: different UIs can be created, new bots can be added, etc.
           </p>
 
-          <p><a href="https://github.com/marianogappa/truco" target="_blank">Game engine</a> - <a href="https://github.com/marianogappa/truco-argentino" target="_blank">This UI</a> </p>
+          <p><a href="https://github.com/marianogappa/truco" target="_blank">Game engine</a> - <a href="https://github.com/marianogappa/conquest-ui" target="_blank">This UI</a> </p>
           <ActionButton action={continueAction} handleAction={hideInfoModal} />
         </div>
       </div>
