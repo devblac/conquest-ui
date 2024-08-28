@@ -13,27 +13,28 @@ import gameOverText from './gameOverTexts';
 import { getRoundOverContent } from './roundOver';
 import { botSrc } from './secretMode';
 
-function Game({manager}) {
+export default Game = ({ manager }) => {
   const [trigger, setTrigger] = useState(0);
 
-  function handleAction(action) {
+  const handleAction = action => {
     setTrigger(manager.runAction(action, setTrigger))
   }
 
-  function removeModalAndHandleAction(action) {
+  const removeModalAndHandleAction = action => {
     const modalOverlay = document.getElementById('roundOverModalOverlay');
     modalOverlay.classList.remove('show');
     stopAudio();
     handleAction(action);
   }
 
-  function removeModalAndLeaveGame(action) {
+  const removeModalAndLeaveGame = action => {
     const modalOverlay = document.getElementById('gameOverModalOverlay');
     modalOverlay.classList.remove('show');
     window.location.href = window.location.href;
   }
 
   const gameState = manager.gameState;
+  // Here I can check current gameState
   console.error('gameState ', gameState);
   const isHumanTurn = gameState.turnPlayerID === 0;
   const isBotTurn = gameState.turnPlayerID === 1;
@@ -147,7 +148,7 @@ function Game({manager}) {
   );
 }
 
-function startGame({maxPoints, isFlorEnabled}) {
+export const startGame = ({maxPoints, isFlorEnabled}) => {
   stopAudio();
   document.getElementById("startGame").remove();
   const root = createRoot(document.getElementById("game"));
@@ -161,19 +162,19 @@ function startGame({maxPoints, isFlorEnabled}) {
   );
 }
 
-export default function GameLandingPage() {
+export const GameLandingPage = () => {
   const [maxPoints, setMaxPoints] = useState(15);
   const [audioOn, setAudioOn] = useState(true);
   const [isFlorEnabled, setIsFlorEnabled] = useState(false);
   const continueAction = {"name": "continue"};
 
-  function showInfoModal() {
+  const showInfoModal = () => {
     const modalOverlay = document.getElementById('infoModal');
     modalOverlay.classList.remove('hidden');
     modalOverlay.classList.add('show');
   }
 
-  function hideInfoModal() {
+  const hideInfoModal = () => {
     const modalOverlay = document.getElementById('infoModal');
     modalOverlay.classList.add('hidden');
     modalOverlay.classList.remove('show');
