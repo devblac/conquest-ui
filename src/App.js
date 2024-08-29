@@ -6,14 +6,20 @@ import SpeechBubble from './SpeechBubble';
 import ActionButtons from './ActionButtons';
 import { ActionButton } from './ActionButtons';
 import PlayerSection from './PlayerSection';
-import Hand from './Hand';
+import Hand from './components/Hand';
 import { playAudio, stopAudio, setMasterSwitchAudioOn } from './audio';
 import Toggle from './Toggle';
 import gameOverText from './gameOverTexts';
 import { getRoundOverContent } from './roundOver';
 import { botSrc } from './secretMode';
 
-export default Game = ({ manager }) => {
+const App = () => {
+  return <GameLandingPage />;
+};
+
+export default App;
+
+export const Game = ({ manager }) => {
   const [trigger, setTrigger] = useState(0);
 
   const handleAction = action => {
@@ -42,7 +48,7 @@ export default Game = ({ manager }) => {
   const leaveGameAction = {"name": "leave_game"};
   const gameOverTextLinesDiv = document.getElementById('gameOverTextLines');
   const dijeTruco = !gameState.isGameEnded && gameState.possibleActions.some(action => action.name === 'say_truco_quiero' && action.requires_reminder === true);
-  let winnerImgSrc = `${process.env.PUBLIC_URL}/img/human.jpeg`
+  let winnerImgSrc = `${process.env.PUBLIC_URL}/img/human.webp`
   let gameOverTextLines = [];
 
   useEffect(() => {
@@ -87,63 +93,42 @@ export default Game = ({ manager }) => {
 
   return (
     <>
-      <div className="viewportContainer">
-        <div className="sideColumn"></div>
-        <div className="gameContainer">
-          <div className="row">
-            <PlayerSection name="Bot" points={gameState.theirScore} imgSrc={botSrc} isTheirTurn={isBotTurn} />
-            <SpeechBubble playerID={0} lastActionLog={gameState.lastActionLog} className="column" dijeTruco={dijeTruco} />
-          </div>
-          <div className="row">
-            <div className="theirUnrevealedCards column">
-              <Hand cards={gameState.theirDisplayUnrevealedCards} />
-            </div>
-          </div>
-          <div className="theirRevealedCards row">
-            <Hand cards={gameState.theirRevealedCards} />
-          </div>
-          <div className="row">
-          </div>
-          <div className="yourRevealedCards row">
-            <Hand cards={gameState.yourRevealedCards} />
-          </div>
-          <div className="row">
-            <div className="yourUnrevealedCards column">
-              <Hand cards={gameState.yourDisplayUnrevealedCards} actions={gameState.possibleActions} handleAction={handleAction} />
-            </div>
-          </div>
-          <div className="row actionButtonsRow">
-            <PlayerSection className="humanPlayerSection" name="Vos" points={gameState.yourScore} imgSrc={`${process.env.PUBLIC_URL}/img/human.jpeg`} isTheirTurn={isHumanTurn} />
-            <ActionButtons 
-              className="actionButtons"
-              isHumanTurn={isHumanTurn}
-              actions={gameState.possibleActions}
-              handleAction={handleAction}
-              isGameEnded={gameState.isGameEnded}
-            />
-          </div>
-        </div>
-        <div className="sideColumn"></div>
+    <div className="board">
+      <div className="player-info">
+        <div className="player-name">Lord Rattington</div>
+        <div className="player-vp">3 VP</div>
       </div>
-      <div id="roundOverModalOverlay" className="hidden">
-        <div id="roundOverModal">
-          {getRoundOverContent(gameState)}
-          <ActionButton action={confirmRoundFinishedAction} handleAction={removeModalAndHandleAction} />
+      <div className="supply">
+        <div className="card-row">
+          {/* Example Pile of Cards */}
+          <div className="card-pile">
+            <img src="/img/province.webp" alt="Province" />
+            <div className="card-count">8</div>
+          </div>
+          {/* Repeat for each card pile */}
         </div>
       </div>
-      <div id="gameOverModalOverlay" className="hidden">
-        <div id="modal">
-          <div id="gameOverText">
-            <span>🏆</span>
-            <img id="winnerImg" className="playerImg" src={winnerImgSrc}/>
-            <span>🏆</span>
-          </div>
-          <div id="gameOverTextLines">
-              {gameOverTextLines.map((line, i) => <p key={i}>{line}</p>)}
-          </div>
-          <ActionButton action={leaveGameAction} handleAction={removeModalAndLeaveGame} />
+      <div className="player-hand">
+        <div className="hand-card">
+          <img src="/public/img/copper.webp" alt="Copper" />
         </div>
+        <div className="hand-card">
+          <img src="/public/img/estate.webp" alt="Estate" />
+        </div>
+        {/* Repeat for each card in hand */}
       </div>
+      <div className="status-bar">
+        <div className="actions-info">0 Actions | 0 Buys | 0 Coins</div>
+        <div className="game-status">WAITING FOR DAKORFA</div>
+      </div>
+      <div className="chat-box">
+        <div className="chat-header">Players can see spectator chat</div>
+        <div className="chat-messages">
+          {/* Chat messages go here */}
+        </div>
+        <input type="text" className="chat-input" placeholder="message" />
+      </div>
+    </div>
     </>
   );
 }
@@ -197,49 +182,26 @@ export const GameLandingPage = () => {
         <div className="landingContainer">
           <div className="sideColumn"></div>
           <div className="landingContent">
-            <h1>TRUCO</h1>
+            <h1>Conquest</h1>
             <div className="vsContainer">
-              <img className="startGameHuman" src={`${process.env.PUBLIC_URL}/img/human.jpeg`} />
+              <img className="startGameHuman" src={`${process.env.PUBLIC_URL}/img/human.webp`} />
               <span className="startGameVs">VS</span>
               <img className="startGameBot" src={botSrc} />
             </div>
             <a id="startGameButton" onClick={() => startGame({maxPoints, isFlorEnabled})}>▶️</a>
-            <Toggle option1Caption={15} option2Caption={30} option1Value={15} option2Value={30} value={maxPoints} onChange={setMaxPoints} />
-            <Toggle option1Caption={"🔊"} option2Caption={"🔇"} option1Value={true} option2Value={false} value={audioOn} onChange={setAudioOn} />
-            <Toggle option1Caption={"🥀"} option2Caption={"🌹"} option1Value={false} option2Value={true} value={isFlorEnabled} onChange={setIsFlorEnabled} />
-            <span id="info_link" onClick={showInfoModal}>info</span>
           </div>
           <div className="sideColumn"></div>
         </div>
       </div>
       <div id="infoModal" className="hidden">
         <div id="infoText">
-        <p>Este juego está basado en y dedicado al primer juego de computadora argentino, <a href="https://www-2.dc.uba.ar/charlas/lud/truco/" target="_blank">
-            Truco Arbiser (1982)</a>, pero el motor del juego y la interfaz de usuario están 
-            construidos desde cero. No hay intención de lucro ni ads, solo la esperanza de que las nuevas generaciones puedan experimentar
-            algunos de los momentos divertidos que vivimos en los años 90.
-          </p>
-
-          <p>El motor es open source, con licencia MIT, y acepto issues & PRs. Soporta multijugador (humano vs humano).
-            Está construído para ser fácilmente extensible: se pueden crear distintas UIs, se pueden agregar nuevos bots, etc.
-          </p>
-          <hr />
-          <p>This game is based on and dedicated to the first Argentinian computer game, <a href="https://www-2.dc.uba.ar/charlas/lud/truco/" target="_blank">
-            Truco Arbiser (1982)</a>, but the game engine and UI are built from scratch.
-            There is no intention of profit, no ads—just the hope that new generations can experience some of the fun moments we enjoyed
-            in the 90s.
-          </p>
-
-          <p>The engine is open source, MIT licensed, and I accept issues & PRs. It supports multiplayer (human vs human).
-            It's built to be easily extensible: different UIs can be created, new bots can be added, etc.
-          </p>
-
-          <p><a href="https://github.com/marianogappa/truco" target="_blank">Game engine</a> - <a href="https://github.com/marianogappa/conquest-ui" target="_blank">This UI</a> </p>
           <ActionButton action={continueAction} handleAction={hideInfoModal} />
         </div>
       </div>
       
-      <div id="game"></div>
+      <div id="game">
+
+      </div>
     </>
   )
 }
