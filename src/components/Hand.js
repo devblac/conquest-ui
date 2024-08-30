@@ -4,9 +4,9 @@ import Card from './Card';
 
 const Hand = ({ handCards }) => {
   return (
-    <Grid container spacing={1}>
+    <Grid container spacing={1} sx={{ justifyContent: 'center', overflow: 'hidden' }}>
       {handCards.map((handCard, index) => (
-        <Grid item key={index}>
+        <Grid item key={index} sx={{ flexShrink: 0 }}>
           <Card 
             id={handCard.card.id}
             displayName={handCard.card.displayName}

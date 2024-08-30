@@ -1,8 +1,13 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid2';
+import PlayerInfo from '../components/PlayerInfo';
+import LeftBoard from '../components/LeftBoard';
 
 const LeftColumn = ({ gameState }) => {
+  const cardPiles = gameState.board.cardPiles;
+  const playerInfo = gameState.players[0];
+
   return (
     <Box sx={{ width: '100%', height: '100%' }}>
       <Grid container direction="column" sx={{ height: '100%' }}>
@@ -31,7 +36,7 @@ const LeftColumn = ({ gameState }) => {
               height: '100%',
             }}
           >
-            Middle Row (60%)
+            <LeftBoard cardPiles={cardPiles} />
           </Box>
         </Grid>
         {/* Third Row */}
@@ -45,7 +50,12 @@ const LeftColumn = ({ gameState }) => {
               height: '100%',
             }}
           >
-            Bottom Row (20%)
+            <PlayerInfo 
+              actions={playerInfo.actions} 
+              buys={playerInfo.buys} 
+              coins={playerInfo.coins} 
+              victoryPoints={playerInfo.victoryPoints} 
+            />
           </Box>
         </Grid>
       </Grid>

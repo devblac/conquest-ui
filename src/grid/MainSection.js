@@ -2,10 +2,13 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid2';
 import Hand from '../components/Hand';
+import Board from '../components/Board';
 
 const MainSection = ({ gameState }) => {
   const playerHandCards = gameState.players[0].hand.handCards;
   const opponentHandCards = gameState.players[1].hand.handCards;
+  const cardPiles = gameState.board.cardPiles;
+
 
   return (
     <Box sx={{ width: '100%', height: '100%' }}>
@@ -49,7 +52,7 @@ const MainSection = ({ gameState }) => {
               height: '100%',
             }}
           >
-            Row 3
+            <Board cardPiles={cardPiles} />
           </Box>
         </Grid>
         {/* Row 4 */}
@@ -63,7 +66,7 @@ const MainSection = ({ gameState }) => {
               height: '100%',
             }}
           >
-            Row 4
+            Buttons
           </Box>
         </Grid>
         {/* Row 5 */}

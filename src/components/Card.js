@@ -22,13 +22,13 @@ const Card = ({ id, displayName, description, treasuresCost, cardType, isReveale
         opacity: isRevealed ? 1 : 0.5,
       }}
     >
-      <Typography variant="h6" sx={{ textAlign: 'center', color: 'black' }}>
+      <Typography variant="h6" sx={{ textAlign: 'center', color: 'black', fontSize: '12px', color: 'black' }}>
         {displayName}
       </Typography>
-      <Typography variant="body2" sx={{ textAlign: 'center', color: 'black' }}>
+      <Typography variant="body2" sx={{ textAlign: 'center', color: 'black', fontSize: '10px', color: 'black' }}>
         {cardType.charAt(0).toUpperCase() + cardType.slice(1)} - Cost: {treasuresCost}
       </Typography>
-      <Typography variant="caption" sx={{ textAlign: 'center', color: 'gray' }}>
+      <Typography variant="caption" sx={{ textAlign: 'center', color: 'gray', fontSize: '8px', color: 'gray'  }}>
         {description}
       </Typography>
     </Box>

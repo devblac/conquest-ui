@@ -1,6 +1,7 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid2';
+import TurnInfo from '../components/TurnInfo';
 
 const RightColumn = ({ gameState }) => {
   return (
@@ -31,7 +32,11 @@ const RightColumn = ({ gameState }) => {
               height: '100%',
             }}
           >
-            Middle Row (70%)
+            <TurnInfo 
+            roundNumber={gameState.roundNumber}
+            turnPlayerID={gameState.turnPlayerID}
+            turnPhase={gameState.turnPhase}
+          />
           </Box>
         </Grid>
         {/* Bottom Row - 5% Height */}

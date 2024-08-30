@@ -1,10 +1,26 @@
 import React from 'react';
 import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 import Card from './Card';
 
 const CardPile = ({ card, count }) => {
   return (
-    <Box sx={{ textAlign: 'center' }}>
+    <Box sx={{
+        width: '100px',    // Fixed width
+        height: '150px',   // Fixed height
+        borderRadius: '8px',
+        backgroundColor: 'white',
+        boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
+        padding: '8px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        overflow: 'hidden',
+        textAlign: 'center',
+        margin: 'auto',
+      }}
+      >
       <Card 
         id={card.id}
         displayName={card.displayName}
@@ -13,9 +29,9 @@ const CardPile = ({ card, count }) => {
         cardType={card.cardType}
         isRevealed={true}
       />
-      <Box sx={{ marginTop: '8px' }}>
-        <strong>Remaining: {count}</strong>
-      </Box>
+      <Typography variant="body2" sx={{ marginTop: '8px', color: 'black' }}>
+        Remaining: {count}
+      </Typography>
     </Box>
   );
 };
