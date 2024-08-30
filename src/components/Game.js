@@ -5,9 +5,9 @@ import { styled } from '@mui/material/styles';
 import Grid from '@mui/material/Grid2';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
-import LeftColumn from './leftColumn/LeftColumn';
-import MainSection from './mainSection/MainSection';
-import RightColumn from './rightColumn/RightColumn';
+import LeftColumn from '../grid/LeftColumn';
+import MainSection from '../grid/MainSection';
+import RightColumn from '../grid/RightColumn';
 
 export const Game = ({ manager }) => {
   const [trigger, setTrigger] = useState(0);
@@ -45,19 +45,19 @@ export const Game = ({ manager }) => {
           item xs={4} md={4} sx={{ height: '100%', width: '30%' }}
           display="flex" justifyContent="center" alignItems="center"
         >
-          <LeftColumn />
+          <LeftColumn gameState={gameState} />
         </Grid>
-        <Grid 
+        <Grid
           item xs={4} sx={{ height: '100%', width: '30%' }}
           display="flex" justifyContent="center" alignItems="center"
         >
-          <MainSection />
+          <MainSection gameState={gameState} />
         </Grid>
-        <Grid 
+        <Grid
           item xs={4} sx={{ height: '100%', width: '30%' }}
           display="flex" justifyContent="center" alignItems="center"
         >
-          <RightColumn />
+          <RightColumn gameState={gameState} />
         </Grid>
       </Grid>
     </Box>

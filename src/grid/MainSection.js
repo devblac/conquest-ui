@@ -1,8 +1,12 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid2';
+import Hand from '../components/Hand';
 
-const MainSection = () => {
+const MainSection = ({ gameState }) => {
+  const playerHandCards = gameState.players[0].hand.handCards;
+  const opponentHandCards = gameState.players[1].hand.handCards;
+
   return (
     <Box sx={{ width: '100%', height: '100%' }}>
       <Grid container direction="column" sx={{ height: '100%' }}>
@@ -17,7 +21,7 @@ const MainSection = () => {
               height: '100%',
             }}
           >
-            Row 1
+            <Hand handCards={opponentHandCards} />
           </Box>
         </Grid>
         {/* Row 2 */}
@@ -73,7 +77,7 @@ const MainSection = () => {
               height: '100%',
             }}
           >
-            Row 5
+            <Hand handCards={playerHandCards} />
           </Box>
         </Grid>
         {/* Row 6 */}
@@ -87,7 +91,7 @@ const MainSection = () => {
               height: '100%',
             }}
           >
-            Row 6
+            
           </Box>
         </Grid>
         {/* Row 7 */}
@@ -101,7 +105,7 @@ const MainSection = () => {
               height: '100%',
             }}
           >
-            Row 7
+            
           </Box>
         </Grid>
       </Grid>

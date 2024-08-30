@@ -2,12 +2,12 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid2';
 
-const LeftColumn = () => {
+const RightColumn = ({ gameState }) => {
   return (
     <Box sx={{ width: '100%', height: '100%' }}>
       <Grid container direction="column" sx={{ height: '100%' }}>
-        {/* First Row */}
-        <Grid item sx={{ height: '20%' }}>
+        {/* Top Row - 25% Height */}
+        <Grid item sx={{ flexGrow: 1, height: '25%' }}>
           <Box
             sx={{
               backgroundColor: 'lightblue',
@@ -17,11 +17,11 @@ const LeftColumn = () => {
               height: '100%',
             }}
           >
-            Top Row (20%)
+            Top Row (25%)
           </Box>
         </Grid>
-        {/* Second Row */}
-        <Grid item sx={{ height: '60%' }}>
+        {/* Middle Row - 70% Height */}
+        <Grid item sx={{ flexGrow: 1, height: '70%' }}>
           <Box
             sx={{
               backgroundColor: 'lightgreen',
@@ -31,11 +31,11 @@ const LeftColumn = () => {
               height: '100%',
             }}
           >
-            Middle Row (60%)
+            Middle Row (70%)
           </Box>
         </Grid>
-        {/* Third Row */}
-        <Grid item sx={{ height: '20%' }}>
+        {/* Bottom Row - 5% Height */}
+        <Grid item sx={{ flexGrow: 1, height: '5%' }}>
           <Box
             sx={{
               backgroundColor: 'lightcoral',
@@ -45,7 +45,7 @@ const LeftColumn = () => {
               height: '100%',
             }}
           >
-            Bottom Row (20%)
+            Bottom Row (5%)
           </Box>
         </Grid>
       </Grid>
@@ -53,4 +53,4 @@ const LeftColumn = () => {
   );
 };
 
-export default LeftColumn;
+export default RightColumn;

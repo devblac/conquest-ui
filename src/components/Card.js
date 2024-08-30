@@ -1,41 +1,38 @@
-export default function Card({card, actions, handleAction}) {
-  actions = actions || [];
+import React from 'react';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
-  if (card.is_backwards) {
-    return (
-      <>
-        <img className="card" id={`card-was-${card.number}-${card.suit}`} src={`${process.env.PUBLIC_URL}/img/reverso.png`} />
-      </>
-    );
-  }
-  if (card.number === null || card.suit === null) {
-    return <div className="card" />;
-  }
-  if (card.is_hole) {
-    return <div className="card" id={`card-was-${card.number}-${card.suit}`} />;
-  }
-
-  function mapCardNumberToChar(number) {
-    if (number < 10) {
-        return `0${number}`;
-    } else {
-        return number.toString();
-    }
-  }
-
-  const src = `${process.env.PUBLIC_URL}/img/${mapCardNumberToChar(card.number)}-${card.suit}s.png`;
-
-  let handleClick = () => {}
-
-  const action = actions.find(action => action.name === "reveal_card" && action.card.number === card.number && action.card.suit === card.suit);
-  if (action) {
-    handleClick = () => handleAction(action);
-  }
-  const className = action ? "card canReveal" : "card";
-
+const Card = ({ id, displayName, description, treasuresCost, cardType, isRevealed }) => {
   return (
-    <>
-      <img className={className} id={`card-${card.number}-${card.suit}`} src={src} onClick={handleClick} />
-    </>
+    <Box
+      sx={{
+        width: '100px',
+        height: '150px',
+        borderRadius: '8px',
+        backgroundColor: 'white',
+        boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
+        padding: '8px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        backgroundImage: `url(/public/imag/${id}.jpg)`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        opacity: isRevealed ? 1 : 0.5,
+      }}
+    >
+      <Typography variant="h6" sx={{ textAlign: 'center', color: 'black' }}>
+        {displayName}
+      </Typography>
+      <Typography variant="body2" sx={{ textAlign: 'center', color: 'black' }}>
+        {cardType.charAt(0).toUpperCase() + cardType.slice(1)} - Cost: {treasuresCost}
+      </Typography>
+      <Typography variant="caption" sx={{ textAlign: 'center', color: 'gray' }}>
+        {description}
+      </Typography>
+    </Box>
   );
-}
+};
+
+export default Card;
