@@ -1,4 +1,3 @@
-import { playAudio } from './audio';
 
 export class GameStateManager {
     constructor() {
@@ -7,7 +6,7 @@ export class GameStateManager {
     }
 
     start({maxPoints, isFlorEnabled}) {
-        this.gameState = jsConquestNew({debug:true});
+        this.gameState = jsConquestNew({debug:true}); // debug true is for testing
         return this.gameState;
     }
 
@@ -55,55 +54,5 @@ export class GameStateManager {
         return _before !== _after;
     }
 
-    playSound() {
-        if (!this.gameState.lastActionLog) {
-            return;
-        }
-
-        const action = this.gameState.lastActionLog.action;
-
-        if (action.name === "reveal_card") {
-            playAudio('reveal_card');
-            return;
-        }
-        
-        // The computer just played the action, so the turn already changed
-        if (action.playerID === 0) {
-            playAudio('press');
-            return;
-        }
-
-        switch (action.name) {
-            case "say_envido":
-            case "say_real_envido":
-            case "say_falta_envido":
-            case "say_truco":
-            case "say_flor":
-                playAudio('envido');
-                break;
-            case "say_envido_quiero":
-            case "say_truco_quiero":
-            case "say_quiero_retruco":
-            case "say_quiero_vale_cuatro":
-            case "say_contraflor":
-            case "say_contraflor_al_resto":
-            case "say_con_flor_quiero":
-                playAudio('yes');
-                break;
-            case "say_envido_no_quiero":
-            case "say_truco_no_quiero":
-            case "say_con_flor_me_achico":
-                playAudio('no');
-                break;
-            case "say_son_buenas":
-                playAudio('son_buenas');
-                break;
-            case "say_son_mejores":
-                playAudio('son_mejores');
-                break;
-            default:
-                break;
-        }
-    }
 }
 
