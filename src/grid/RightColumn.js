@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid2';
 import TurnInfo from '../components/TurnInfo';
 
-const RightColumn = ({ gameState }) => {
+const RightColumn = ({ gameState, handleAction }) => {
   return (
     <Box sx={{ width: '100%', height: '100%' }}>
       <Grid container direction="column" sx={{ height: '100%' }}>
@@ -33,6 +33,8 @@ const RightColumn = ({ gameState }) => {
             }}
           >
             <TurnInfo 
+            gameState={gameState}
+            handleAction={handleAction}
             roundNumber={gameState.roundNumber}
             turnPlayerID={gameState.turnPlayerID}
             turnPhase={gameState.turnPhase}

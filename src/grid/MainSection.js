@@ -4,7 +4,7 @@ import Grid from '@mui/material/Grid2';
 import Hand from '../components/Hand';
 import Board from '../components/Board';
 
-const MainSection = ({ gameState }) => {
+const MainSection = ({ gameState, handleAction }) => {
   const playerHandCards = gameState.players[0].hand.handCards;
   const opponentHandCards = gameState.players[1].hand.handCards;
   const cardPiles = gameState.board.cardPiles;
@@ -24,7 +24,7 @@ const MainSection = ({ gameState }) => {
               height: '100%',
             }}
           >
-            <Hand handCards={opponentHandCards} />
+            <Hand gameState={gameState} handCards={opponentHandCards} />
           </Box>
         </Grid>
         {/* Row 2 */}
@@ -80,7 +80,7 @@ const MainSection = ({ gameState }) => {
               height: '100%',
             }}
           >
-            <Hand handCards={playerHandCards} />
+            <Hand gameState={gameState} playerID={gameState.youPlayerID} handCards={playerHandCards} handleAction={handleAction} />
           </Box>
         </Grid>
         {/* Row 6 */}

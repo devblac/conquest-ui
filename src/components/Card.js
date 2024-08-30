@@ -2,9 +2,13 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-const Card = ({ id, displayName, description, treasuresCost, cardType, isRevealed }) => {
+const Card = ({ id, displayName, description, treasuresCost, cardType, isRevealed, handleAction }) => {
+    let src = `${process.env.PUBLIC_URL}/img/${id}.webp`;
+    const cardClassName = handleAction ? "card clickable" : "card";
+    console.log('handleAction CARD', handleAction);
   return (
     <Box
+      className={cardClassName}
       sx={{
         width: '100px',
         height: '150px',
@@ -16,12 +20,27 @@ const Card = ({ id, displayName, description, treasuresCost, cardType, isReveale
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'space-between',
-        backgroundImage: `url(/public/imag/${id}.jpg)`,
+        backgroundImage: `url(src)`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         opacity: isRevealed ? 1 : 0.5,
       }}
+      onClick={handleAction}
+      
     >
+        <Box
+        component="img"
+        src={src}
+        alt={displayName}
+        sx={{
+          width: '80px',
+          height: '80px',
+          objectFit: 'cover',
+          borderRadius: '4px',
+          marginBottom: '8px',
+        }}
+        onClick={handleAction}
+      />
       <Typography variant="h6" sx={{ textAlign: 'center', color: 'black', fontSize: '12px', color: 'black' }}>
         {displayName}
       </Typography>

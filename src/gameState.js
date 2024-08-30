@@ -12,7 +12,7 @@ export class GameStateManager {
 
     runAction(action, callback) {
         if (this.gameState.turnPlayerID === 0) {
-            if (!action || !action.name) {
+            if (!action || !action.kind) {
                 return this.gameState;
             }
             this.gameState = jsRunAction(action);
@@ -22,8 +22,6 @@ export class GameStateManager {
                 return null;
             }
         }
-
-        this.playSound();
 
         // If the game is not ended and it's the bot's turn, we run the bot action after a delay
         if (!this.gameState.isGameEnded && this.gameState.turnPlayerID !== 0) {

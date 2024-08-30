@@ -13,12 +13,13 @@ export const Game = ({ manager }) => {
   const [trigger, setTrigger] = useState(0);
 
   const handleAction = action => {
+    console.log('MainGame action', action);
     setTrigger(manager.runAction(action, setTrigger))
   }
 
   const gameState = manager.gameState;
   // Here I can check current gameState
-  console.error('gameState ', gameState);
+  console.log('gameState ', gameState);
   
   useEffect(() => {
     if (gameState.isGameEnded) {
@@ -45,19 +46,20 @@ export const Game = ({ manager }) => {
           item xs={4} md={4} sx={{ height: '100%', width: '30%' }}
           display="flex" justifyContent="center" alignItems="center"
         >
-          <LeftColumn gameState={gameState} />
+          <LeftColumn gameState={gameState} handleAction={handleAction} />
         </Grid>
         <Grid
           item xs={4} sx={{ height: '100%', width: '30%' }}
           display="flex" justifyContent="center" alignItems="center"
         >
-          <MainSection gameState={gameState} />
+          <MainSection gameState={gameState} handleAction={handleAction} />
         </Grid>
         <Grid
           item xs={4} sx={{ height: '100%', width: '30%' }}
           display="flex" justifyContent="center" alignItems="center"
         >
-          <RightColumn gameState={gameState} />
+          <RightColumn gameState={gameState} handleAction={handleAction} />
+
         </Grid>
       </Grid>
     </Box>
