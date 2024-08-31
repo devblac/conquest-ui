@@ -9,9 +9,20 @@ const MainSection = ({ gameState, handleAction }) => {
   const opponentHandCards = gameState.players[1].hand.handCards;
   const cardPiles = gameState.board.cardPiles;
 
-
+  const revealedPlayerCards = playerHandCards.filter(card => card.isRevealed);
+  const unrevealedPlayerCards = playerHandCards.filter(card => !card.isRevealed);
+  const revealedOpponentCards = opponentHandCards.filter(card => card.isRevealed);
+  const unrevealedOpponentCards = opponentHandCards.filter(card => !card.isRevealed);
+  
   return (
-    <Box sx={{ width: '100%', height: '100%' }}>
+    <Box sx={{ 
+      width: '100%', 
+      height: '100%', 
+      display: 'flex', 
+      flexDirection: 'column', 
+      overflow: 'hidden',
+      minWidth: '300px',
+      }}>
       <Grid container direction="column" sx={{ height: '100%' }}>
         {/* Row 1 */}
         <Grid item sx={{ flexGrow: 1, minHeight: '10%' }}>
@@ -24,11 +35,11 @@ const MainSection = ({ gameState, handleAction }) => {
               height: '100%',
             }}
           >
-            <Hand gameState={gameState} handCards={opponentHandCards} />
+            <Hand gameState={gameState} handCards={unrevealedOpponentCards} />
           </Box>
         </Grid>
         {/* Row 2 */}
-        <Grid item sx={{ flexGrow: 1, minHeight: '10%' }}>
+        <Grid item sx={{ flexGrow: 1, overflow: 'auto', minWidth: '300px', minHeight: '10%' }}>
           <Box
             sx={{
               backgroundColor: 'lightgreen',
@@ -38,11 +49,11 @@ const MainSection = ({ gameState, handleAction }) => {
               height: '100%',
             }}
           >
-            Row 2
+            <Hand gameState={gameState} handCards={revealedOpponentCards} />
           </Box>
         </Grid>
         {/* Row 3 */}
-        <Grid item sx={{ flexGrow: 1, minHeight: '10%' }}>
+        <Grid item sx={{ flexGrow: 1, overflow: 'auto', minWidth: '300px', minHeight: '10%' }}>
           <Box
             sx={{
               backgroundColor: 'lightcoral',
@@ -56,7 +67,7 @@ const MainSection = ({ gameState, handleAction }) => {
           </Box>
         </Grid>
         {/* Row 4 */}
-        <Grid item sx={{ flexGrow: 1, minHeight: '10%' }}>
+        <Grid item sx={{ flexGrow: 1, overflow: 'auto', minWidth: '300px', minHeight: '5%' }}>
           <Box
             sx={{
               backgroundColor: 'lightyellow',
@@ -70,7 +81,7 @@ const MainSection = ({ gameState, handleAction }) => {
           </Box>
         </Grid>
         {/* Row 5 */}
-        <Grid item sx={{ flexGrow: 1, minHeight: '10%' }}>
+        <Grid item sx={{ flexGrow: 1, overflow: 'auto', minWidth: '300px', minHeight: '10%' }}>
           <Box
             sx={{
               backgroundColor: 'lightgray',
@@ -80,11 +91,11 @@ const MainSection = ({ gameState, handleAction }) => {
               height: '100%',
             }}
           >
-            <Hand gameState={gameState} playerID={gameState.youPlayerID} handCards={playerHandCards} handleAction={handleAction} />
+            
           </Box>
         </Grid>
-        {/* Row 6 */}
-        <Grid item sx={{ flexGrow: 1, minHeight: '10%' }}>
+        <Hand gameState={gameState} playerID={gameState.youPlayerID} handCards={revealedPlayerCards} handleAction={handleAction} />
+        <Grid item sx={{ flexGrow: 1, overflow: 'auto', minWidth: '300px', minHeight: '10%' }}>
           <Box
             sx={{
               backgroundColor: 'lightpink',
@@ -92,23 +103,12 @@ const MainSection = ({ gameState, handleAction }) => {
               alignItems: 'center',
               justifyContent: 'center',
               height: '100%',
+              flexGrow: 1, 
+              overflow: 'auto', 
+              minWidth: '300px'
             }}
           >
-            
-          </Box>
-        </Grid>
-        {/* Row 7 */}
-        <Grid item sx={{ flexGrow: 1, minHeight: '10%' }}>
-          <Box
-            sx={{
-              backgroundColor: 'lightcyan',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              height: '100%',
-            }}
-          >
-            
+            <Hand gameState={gameState} playerID={gameState.youPlayerID} handCards={unrevealedPlayerCards} handleAction={handleAction} />
           </Box>
         </Grid>
       </Grid>

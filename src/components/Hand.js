@@ -24,6 +24,7 @@ const Hand = ({ gameState, playerID, handCards, handleAction }) => {
             cardType={handCard.card.cardType}
             isRevealed={handCard.isRevealed}
             handleAction={resolveAction(index, playerID)}
+            playerID={playerID}
           />
         </Grid>
       ))}

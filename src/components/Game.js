@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 // import Hand from './Hand';
 import { styled } from '@mui/material/styles';
 import Grid from '@mui/material/Grid2';
-import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import LeftColumn from '../grid/LeftColumn';
 import MainSection from '../grid/MainSection';
@@ -49,7 +48,7 @@ export const Game = ({ manager }) => {
           <LeftColumn gameState={gameState} handleAction={handleAction} />
         </Grid>
         <Grid
-          item xs={4} sx={{ height: '100%', width: '30%' }}
+          item xs={4} sx={{ height: '100%', width: '40%' }}
           display="flex" justifyContent="center" alignItems="center"
         >
           <MainSection gameState={gameState} handleAction={handleAction} />

@@ -2,8 +2,9 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-const Card = ({ id, displayName, description, treasuresCost, cardType, isRevealed, handleAction }) => {
-    let src = `${process.env.PUBLIC_URL}/img/${id}.webp`;
+const Card = ({ id, displayName, description, treasuresCost, cardType, isRevealed, handleAction, playerID }) => {
+    const src = `${process.env.PUBLIC_URL}/img/${id}.webp`;
+    const backgroundImage = id == 'obfuscated' ? `${process.env.PUBLIC_URL}/img/back.jpg` : 'none';
     const cardClassName = handleAction ? "card clickable" : "card";
     console.log('handleAction CARD', handleAction);
   return (
@@ -20,7 +21,7 @@ const Card = ({ id, displayName, description, treasuresCost, cardType, isReveale
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'space-between',
-        backgroundImage: `url(src)`,
+        backgroundImage: backgroundImage,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         opacity: isRevealed ? 1 : 0.5,
