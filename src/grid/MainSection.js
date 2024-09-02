@@ -3,6 +3,17 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid2';
 import Hand from '../components/Hand';
 import Board from '../components/Board';
+import Button from '@mui/material/Button';
+
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+
+const actionIcons = {
+  end_buys: <PlayArrowIcon />,
+  reveal_all_treasures: <VisibilityIcon />,
+  resign: <ExitToAppIcon />,
+};
 
 const MainSection = ({ gameState, handleAction }) => {
   const playerHandCards = gameState.players[0].hand.handCards;
@@ -14,6 +25,11 @@ const MainSection = ({ gameState, handleAction }) => {
   const revealedOpponentCards = opponentHandCards.filter(card => card.isRevealed);
   const unrevealedOpponentCards = opponentHandCards.filter(card => !card.isRevealed);
   
+  const filteredActions = gameState.possibleActions.filter(action =>
+    ['end_buys', 'reveal_all_treasures', 'resign'].includes(action.kind) && action.playerID === 0
+  );
+
+
   return (
     <Box sx={{ 
       width: '100%', 
@@ -77,7 +93,28 @@ const MainSection = ({ gameState, handleAction }) => {
               height: '100%',
             }}
           >
-            Buttons
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+              {filteredActions.map(action => (
+              <Button 
+              key={action.kind} 
+              onClick={() => handleAction(action)} 
+              variant="contained" 
+              color="primary"
+              sx={{
+                padding: '8px 16px',
+                margin: '10px',
+                borderRadius: '8px',
+                fontSize: '14px',
+                textTransform: 'none',  // Ensures the text is not all-uppercase
+                display: 'flex',
+                alignItems: 'center',
+              }}
+              startIcon={actionIcons[action.kind]}
+            >
+              {action.kind.replace(/_/g, ' ')}
+            </Button>
+              ))}
+            </Box>
           </Box>
         </Grid>
         {/* Row 5 */}
@@ -91,10 +128,9 @@ const MainSection = ({ gameState, handleAction }) => {
               height: '100%',
             }}
           >
-            
+            <Hand gameState={gameState} playerID={gameState.youPlayerID} handCards={revealedPlayerCards} handleAction={handleAction} />
           </Box>
         </Grid>
-        <Hand gameState={gameState} playerID={gameState.youPlayerID} handCards={revealedPlayerCards} handleAction={handleAction} />
         <Grid item sx={{ flexGrow: 1, overflow: 'auto', minWidth: '300px', minHeight: '10%' }}>
           <Box
             sx={{
