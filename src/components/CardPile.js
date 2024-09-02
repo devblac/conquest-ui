@@ -3,11 +3,11 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Card from './Card';
 
-const CardPile = ({ card, count }) => {
+const CardPile = ({ card, count, handleAction }) => {
   return (
     <Box sx={{
-        width: '100px',    // Fixed width
-        height: '150px',   // Fixed height
+        width: '100px',
+        height: '150px',
         borderRadius: '8px',
         backgroundColor: 'white',
         boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
@@ -28,6 +28,8 @@ const CardPile = ({ card, count }) => {
         treasuresCost={card.treasuresCost}
         cardType={card.cardType}
         isRevealed={true}
+        handleAction={handleAction}
+        remainingCount={count}
       />
       <Typography variant="body2" sx={{ marginTop: '8px', color: 'black' }}>
         Remaining: {count}

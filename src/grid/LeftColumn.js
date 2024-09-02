@@ -4,9 +4,10 @@ import Grid from '@mui/material/Grid2';
 import PlayerInfo from '../components/PlayerInfo';
 import LeftBoard from '../components/LeftBoard';
 
-const LeftColumn = ({ gameState }) => {
+const LeftColumn = ({ gameState, handleAction }) => {
   const cardPiles = gameState.board.cardPiles;
   const playerInfo = gameState.players[0];
+
 
   return (
     <Box sx={{ width: '100%', height: '100%' }}>
@@ -36,7 +37,7 @@ const LeftColumn = ({ gameState }) => {
               height: '100%',
             }}
           >
-            <LeftBoard cardPiles={cardPiles} />
+            <LeftBoard cardPiles={cardPiles} gameState={gameState} handleAction={handleAction} />
           </Box>
         </Grid>
         {/* Third Row */}

@@ -79,7 +79,7 @@ const MainSection = ({ gameState, handleAction }) => {
               height: '100%',
             }}
           >
-            <Board cardPiles={cardPiles} />
+            <Board cardPiles={cardPiles} gameState={gameState} handleAction={handleAction}/>
           </Box>
         </Grid>
         {/* Row 4 */}

@@ -5,8 +5,12 @@ import Card from './Card';
 const Hand = ({ gameState, playerID, handCards, handleAction }) => {
     
     const resolveAction = (index, playerID) => {
-        const action = gameState.possibleActions.find(action => action.playerID === playerID && action.kind === "reveal_card" && action.index === index);
-        if (!action) return;
+        const action = gameState.possibleActions.find(action =>
+          action.playerID === playerID &&
+          action.kind === "reveal_card" &&
+          action.index === index
+        );
+        if (!action) return null;
         return () => {
             console.log('action', action);
             handleAction(action);
