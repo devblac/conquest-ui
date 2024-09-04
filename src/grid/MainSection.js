@@ -10,6 +10,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 const actionIcons = {
+  end_actions: <PlayArrowIcon />,
   end_buys: <PlayArrowIcon />,
   reveal_all_treasures: <VisibilityIcon />,
   resign: <ExitToAppIcon />,
@@ -26,7 +27,7 @@ const MainSection = ({ gameState, handleAction }) => {
   const unrevealedOpponentCards = opponentHandCards.filter(card => !card.isRevealed);
   
   const filteredActions = gameState.possibleActions.filter(action =>
-    ['end_buys', 'reveal_all_treasures', 'resign'].includes(action.kind) && action.playerID === 0
+    ['end_actions','end_buys', 'reveal_all_treasures', 'resign'].includes(action.kind) && action.playerID === 0
   );
 
 

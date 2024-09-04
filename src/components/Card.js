@@ -6,7 +6,7 @@ const Card = ({ id, displayName, description, treasuresCost, cardType, isReveale
     const src = `${process.env.PUBLIC_URL}/img/${id}.webp`;
     const backgroundImage = id == 'obfuscated' ? `${process.env.PUBLIC_URL}/img/back.jpg` : 'none';
     const cardClassName = handleAction ? "card clickable" : "card";
-    console.log('handleAction CARD', handleAction);
+    // console.log('handleAction CARD', handleAction); commented to avoid console spam
   return (
     <Box
       className={cardClassName}
