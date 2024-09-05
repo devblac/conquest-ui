@@ -45,7 +45,7 @@ const MainSection = ({ gameState, handleAction }) => {
         <Grid item sx={{ flexGrow: 1, minHeight: '10%' }}>
           <Box
             sx={{
-              backgroundColor: 'lightblue',
+              // backgroundColor: 'lightblue',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -59,7 +59,7 @@ const MainSection = ({ gameState, handleAction }) => {
         <Grid item sx={{ flexGrow: 1, overflow: 'auto', minWidth: '300px', minHeight: '10%' }}>
           <Box
             sx={{
-              backgroundColor: 'lightgreen',
+              // backgroundColor: 'lightgreen',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -73,7 +73,7 @@ const MainSection = ({ gameState, handleAction }) => {
         <Grid item sx={{ flexGrow: 1, overflow: 'auto', minWidth: '300px', minHeight: '10%' }}>
           <Box
             sx={{
-              backgroundColor: 'lightcoral',
+              // backgroundColor: 'lightcoral',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -87,7 +87,7 @@ const MainSection = ({ gameState, handleAction }) => {
         <Grid item sx={{ flexGrow: 1, overflow: 'auto', minWidth: '300px', minHeight: '5%' }}>
           <Box
             sx={{
-              backgroundColor: 'lightyellow',
+              // backgroundColor: 'lightyellow',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -122,7 +122,7 @@ const MainSection = ({ gameState, handleAction }) => {
         <Grid item sx={{ flexGrow: 1, overflow: 'auto', minWidth: '300px', minHeight: '10%' }}>
           <Box
             sx={{
-              backgroundColor: 'lightgray',
+              // backgroundColor: 'lightgray',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -135,7 +135,7 @@ const MainSection = ({ gameState, handleAction }) => {
         <Grid item sx={{ flexGrow: 1, overflow: 'auto', minWidth: '300px', minHeight: '10%' }}>
           <Box
             sx={{
-              backgroundColor: 'lightpink',
+              // backgroundColor: 'lightpink',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',

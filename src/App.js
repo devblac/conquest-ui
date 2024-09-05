@@ -4,6 +4,7 @@ import React, { StrictMode } from "react";
 import { GameStateManager } from './gameState';
 import { ActionButton } from './ActionButtons';
 import { Game } from './components/Game';
+import { Box } from '@mui/material';
 
 const App = () => {
   return <GameLandingPage />;
@@ -20,7 +21,20 @@ export const startGame = ({}) => {
 
   root.render(
     <StrictMode>
-      <Game manager={manager}/>
+      <Box
+        sx={{
+          width: '100vw',
+          height: '100vh',
+          backgroundImage: `url(${process.env.PUBLIC_URL}/img/inheritance.webp)`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Game manager={manager} />
+      </Box>
     </StrictMode>
   );
 }
