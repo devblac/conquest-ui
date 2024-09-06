@@ -11,6 +11,10 @@ const Card = ({ id, displayName, description, treasuresCost, cardType, isReveale
         // Placeholder for additional effects
     }, [handleAction, actionInProgress]);
 
+    // useEffect(() => {
+    //     console.log('Action for this card:', id, handleAction);
+    // }, [handleAction]);
+  
     return (
         <Box
             sx={{
@@ -33,7 +37,7 @@ const Card = ({ id, displayName, description, treasuresCost, cardType, isReveale
                 transition: 'transform 0.2s ease, box-shadow 0.2s ease',
                 '&:hover': {
                     boxShadow: handleAction ? '0px 0px 20px rgba(0, 0, 0, 0.3)' : '0px 0px 10px rgba(0, 0, 0, 0.15)',
-                    transform: handleAction ? 'scale(1.02)' : 'none', // Slight zoom effect
+                    transform: handleAction ? 'scale(1.02)' : 'none' // Slight zoom effect
                 }
             }}
             onClick={handleAction}
@@ -51,7 +55,7 @@ const Card = ({ id, displayName, description, treasuresCost, cardType, isReveale
                         borderRadius: '4px',
                         padding: '2px 6px',
                         fontSize: '12px',
-                        fontWeight: 'bold',
+                        fontWeight: 'bold'
                     }}
                 >
                     {remainingCount}
@@ -69,7 +73,7 @@ const Card = ({ id, displayName, description, treasuresCost, cardType, isReveale
                         height: '80px',
                         objectFit: 'cover',
                         borderRadius: '4px',
-                        marginBottom: '8px',
+                        marginBottom: '8px'
                     }}
                 />
             )}

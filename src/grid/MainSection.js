@@ -1,4 +1,4 @@
-import React from 'react';
+import { React, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid2';
 import Hand from '../components/Hand';
@@ -17,9 +17,10 @@ const actionIcons = {
 };
 
 const MainSection = ({ gameState, handleAction }) => {
-  const playerHandCards = gameState.players[0].hand.handCards;
-  const opponentHandCards = gameState.players[1].hand.handCards;
+  const playerHandCards = gameState.players[0].hand.handCards.map((card, index) => ({ ...card, index }));
+  const opponentHandCards = gameState.players[1].hand.handCards.map((card, index) => ({ ...card, index }));
   const cardPiles = gameState.board.cardPiles;
+
 
   const revealedPlayerCards = playerHandCards.filter(card => card.isRevealed);
   const unrevealedPlayerCards = playerHandCards.filter(card => !card.isRevealed);
@@ -30,6 +31,10 @@ const MainSection = ({ gameState, handleAction }) => {
     ['end_actions','end_buys', 'reveal_all_treasures', 'resign'].includes(action.kind) && action.playerID === 0
   );
 
+
+  useEffect(() => {
+    console.log('Possible actions:', gameState.possibleActions);
+  }, [gameState.possibleActions]);
 
   return (
     <Box sx={{ 
