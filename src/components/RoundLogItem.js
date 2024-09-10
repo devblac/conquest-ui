@@ -35,8 +35,15 @@ const isImportantAction = (actionKind) => {
               }}
             >
               {action.kind.replace(/_/g, ' ')}
-              {action.kind === 'reveal_card' && ` - revealed ${action.card.displayName}`}
-              {action.kind === 'buy_card' && ` - bought ${action.card.displayName}`}
+                            {action.kind === 'reveal_card' && action.HandCard 
+                                ? ` - ${action.HandCard.card.displayName}`
+                                : ''}
+                            {action.kind === 'buy_card' && action.card 
+                                ? ` - ${action.card.displayName}` 
+                                : ''}
+                            {action.kind === 'gain_card' && action.card 
+                                ? ` - ${action.card.displayName}` 
+                                : ''}
             </Typography>
           ))}
         </>
@@ -59,8 +66,15 @@ const isImportantAction = (actionKind) => {
               }}
             >
               {action.kind.replace(/_/g, ' ')}
-              {action.kind === 'reveal_card' && ` - revealed ${action.card.displayName}`}
-              {action.kind === 'buy_card' && ` - bought ${action.card.displayName}`}
+                            {action.kind === 'reveal_card' && action.HandCard 
+                                ? ` - ${action.HandCard.card.displayName}`
+                                : ''}
+                            {action.kind === 'buy_card' && action.card 
+                                ? ` - ${action.card.displayName}` 
+                                : ''}
+                            {action.kind === 'gain_card' && action.card 
+                                ? ` - ${action.card.displayName}` 
+                                : ''}
             </Typography>
           ))}
         </>

@@ -8,18 +8,23 @@ const Hand = ({ gameState, playerID, handCards, handleAction }) => {
         const action = gameState.possibleActions.find(action =>
           action.playerID === playerID &&
           action.kind === "reveal_card" &&
+          action.HandCard &&
           action.HandCard.index === index
         );
-        if (!action) return null;
+        if (!action) {
+          console.error(`Action not found for index: ${index}`);
+        return null;
+        };
         return () => {
             console.log('action', action);
             handleAction(action);
         }
     }
+
     return (
     <Grid container spacing={1} sx={{ justifyContent: 'center', overflow: 'hidden' }}>
-      {handCards.map((handCard, index) => (
-        <Grid item key={index} sx={{ flexShrink: 0 }}>
+      {handCards.map((handCard) => (
+        <Grid item key={handCard.index} sx={{ flexShrink: 0 }}>
           <Card 
             id={handCard.card.id}
             displayName={handCard.card.displayName}
@@ -27,7 +32,7 @@ const Hand = ({ gameState, playerID, handCards, handleAction }) => {
             treasuresCost={handCard.card.treasuresCost}
             cardType={handCard.card.cardType}
             isRevealed={handCard.isRevealed}
-            handleAction={resolveAction(index, playerID)}
+            handleAction={resolveAction(handCard.index, playerID)}
             playerID={playerID}
           />
         </Grid>

@@ -28,7 +28,15 @@ const MainSection = ({ gameState, handleAction }) => {
   const unrevealedOpponentCards = opponentHandCards.filter(card => !card.isRevealed);
   
   const filteredActions = gameState.possibleActions.filter(action =>
-    ['end_actions','end_buys', 'reveal_all_treasures', 'resign'].includes(action.kind) && action.playerID === 0
+  {
+    const isValidAction = ['end_actions', 'end_buys', 'reveal_all_treasures', 'resign'].includes(action.kind) && action.playerID === gameState.youPlayerID;
+    if (!action.HandCard || !action.HandCard.card) {
+        console.error('Action missing HandCard or card data:', action);
+        return false; // Skip actions that are missing essential data
+    }
+    return isValidAction;
+
+  }
   );
 
 

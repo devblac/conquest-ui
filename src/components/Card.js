@@ -4,6 +4,10 @@ import Typography from '@mui/material/Typography';
 import { cardSkeletons } from '../utils/CardsSkeletons';
 
 const Card = ({ id, displayName, description, treasuresCost, cardType, isRevealed, handleAction, remainingCount }) => {
+    if (!id || !displayName || !cardType) {
+        console.error('Card data is incomplete or missing:', { id, displayName, cardType });
+        return null; // Return nothing if card data is missing
+    }
     const src = `${process.env.PUBLIC_URL}/img/${id}.webp`;
     const skeleton = cardSkeletons[cardType];
     //  isRevealed, handleAction, remainingCount
