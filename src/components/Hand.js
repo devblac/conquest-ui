@@ -8,7 +8,7 @@ const Hand = ({ gameState, playerID, handCards, handleAction }) => {
         const action = gameState.possibleActions.find(action =>
           action.playerID === playerID &&
           action.kind === "reveal_card" &&
-          action.index === index
+          action.HandCard.index === index
         );
         if (!action) return null;
         return () => {

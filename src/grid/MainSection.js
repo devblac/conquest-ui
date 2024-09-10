@@ -17,8 +17,8 @@ const actionIcons = {
 };
 
 const MainSection = ({ gameState, handleAction }) => {
-  const playerHandCards = gameState.players[0].hand.handCards.map((card, index) => ({ ...card, index }));
-  const opponentHandCards = gameState.players[1].hand.handCards.map((card, index) => ({ ...card, index }));
+  const playerHandCards = gameState.players[gameState.youPlayerID].hand.handCards;
+  const opponentHandCards = gameState.players[gameState.opponentPlayerID].hand.handCards;
   const cardPiles = gameState.board.cardPiles;
 
 
@@ -101,8 +101,8 @@ const MainSection = ({ gameState, handleAction }) => {
           >
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
               {filteredActions.map(action => (
-              <Button 
-              key={action.kind} 
+                <Button 
+                key={action.kind} 
               onClick={() => handleAction(action)} 
               variant="contained" 
               color="primary"
@@ -116,9 +116,9 @@ const MainSection = ({ gameState, handleAction }) => {
                 alignItems: 'center',
               }}
               startIcon={actionIcons[action.kind]}
-            >
-              {action.kind.replace(/_/g, ' ')}
-            </Button>
+                >
+                  {action.kind.replace(/_/g, ' ')}
+                </Button>
               ))}
             </Box>
           </Box>

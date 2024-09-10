@@ -3,13 +3,13 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { cardSkeletons } from '../utils/CardsSkeletons';
 
-const Card = ({ id, displayName, description, treasuresCost, cardType, isRevealed, handleAction, playerID, remainingCount, actionInProgress }) => {
+const Card = ({ id, displayName, description, treasuresCost, cardType, isRevealed, handleAction, remainingCount }) => {
     const src = `${process.env.PUBLIC_URL}/img/${id}.webp`;
     const skeleton = cardSkeletons[cardType];
-
+    //  isRevealed, handleAction, remainingCount
     useEffect(() => {
         // Placeholder for additional effects
-    }, [handleAction, actionInProgress]);
+    }, [handleAction]); // actionInProgress
 
     // useEffect(() => {
     //     console.log('Action for this card:', id, handleAction);
