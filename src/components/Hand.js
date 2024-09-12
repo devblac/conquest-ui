@@ -16,7 +16,7 @@ const Hand = ({ gameState, playerID, handCards, handleAction }) => {
         return null;
         };
         return () => {
-            console.log('action', action);
+            console.log('This is an action', action);
             handleAction(action);
         }
     }
