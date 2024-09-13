@@ -17,6 +17,7 @@ const Hand = ({ gameState, playerID, handCards, handleAction }) => {
         };
         return () => {
             console.log('This is an action', action);
+            console.log('Are we gonna keep this?', action);
             handleAction(action);
         }
     }
