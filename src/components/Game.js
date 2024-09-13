@@ -7,6 +7,7 @@ import Box from '@mui/material/Box';
 import LeftColumn from '../grid/LeftColumn';
 import MainSection from '../grid/MainSection';
 import RightColumn from '../grid/RightColumn';
+import MoatModal from './MoatModal';
 
 export const Game = ({ manager }) => {
   const [trigger, setTrigger] = useState(0);
@@ -60,7 +61,26 @@ export const Game = ({ manager }) => {
           <RightColumn gameState={gameState} handleAction={handleAction} />
 
         </Grid>
+        <MoatModal 
+          open={hasMoatActions(gameState)}
+          yesAction={() => handleAction(yesAction(gameState))}
+          noAction={() => handleAction(noAction(gameState))}
+        />
       </Grid>
     </Box>
   );
+}
+
+function hasMoatActions(gameState) {
+  // At the moment, yes/no is only for Moat, so let's just check for that.
+  return gameState.possibleActions.some(action => action.kind === "yes") &&
+    gameState.possibleActions.some(action => action.kind === "no");
+}
+
+function yesAction(gameState) {
+  return gameState.possibleActions.find(action => action.kind === "yes");
+}
+
+function noAction(gameState) {
+  return gameState.possibleActions.find(action => action.kind === "no");
 }
