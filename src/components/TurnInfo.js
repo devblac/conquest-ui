@@ -38,10 +38,34 @@ const withHandCards = (action, handCards) =>
     handCards: handCards,
   } : undefined;
 
-const getDiscardCardsAction = (gameState, selectedHandCards) =>
-  withHandCards(findActionByKind(gameState, "discard_cards"), selectedHandCards);
+// The Discard/Trash buttons should only be enabled if the selected cards satisfy the constraints of the action.
+// For example, if the action is "discard_cards up_to_n 3", then we should only enable the button if 3 or fewer cards are selected.
+const satisfiesActionConstraints = (gameState, selectedHandCards, kind) => {
+  const action = findActionByKind(gameState, kind);
 
-const getTrashCardsAction = (gameState, selectedHandCards) =>
-  withHandCards(findActionByKind(gameState, "trash_cards"), selectedHandCards);
+  if (!action) {
+    return false;
+  }
+
+  const {up_to_n, exactly_n, until_n_left} = action
+
+  if (until_n_left) {
+    exactly_n = gameState.players[gameState.turnPlayerID].hand.handCards.length - until_n_left;
+  }
+  if (up_to_n && selectedHandCards.length > up_to_n) {
+    return;
+  }
+  if (exactly_n && selectedHandCards.length !== exactly_n) {
+    return;
+  }
+
+  return true;
+}
+
+const getDiscardCardsAction = (gameState, selectedHandCards) => satisfiesActionConstraints(gameState, selectedHandCards, "discard_cards") ?
+  withHandCards(findActionByKind(gameState, "discard_cards"), selectedHandCards) : undefined;
+
+const getTrashCardsAction = (gameState, selectedHandCards) => satisfiesActionConstraints(gameState, selectedHandCards, "trash_cards") ?
+  withHandCards(findActionByKind(gameState, "trash_cards"), selectedHandCards) : undefined;
 
 export default TurnInfo;

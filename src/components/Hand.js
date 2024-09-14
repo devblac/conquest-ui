@@ -12,7 +12,7 @@ const Hand = ({ gameState, playerID, handCards, handleAction, toggleCardSelectio
           action.HandCard.index === index
         );
         if (canSelectCards(gameState) && toggleCardSelection) {
-          return () => toggleCardSelection(handCard)
+          return () => toggleCardSelection(handCard, findSelectCardsAction(gameState))
         }
         // if (!action) {
         //   console.error(`Action not found for index: ${index}`);
@@ -45,11 +45,9 @@ const Hand = ({ gameState, playerID, handCards, handleAction, toggleCardSelectio
   );
 };
 
-const canSelectCards = (gameState) => {
-  return gameState.possibleActions.some(action =>
-    action.kind === "discard_cards" ||
-    action.kind === "trash_cards"
-  );
-}
+const findActionByKinds = (gameState, kinds) => gameState.possibleActions.find(action => kinds.includes(action.kind));
+const findSelectCardsAction = (gameState) => findActionByKinds(gameState, ["discard_cards", "trash_cards"]);
+const canSelectCards = (gameState) => findSelectCardsAction(gameState) !== undefined;
+
 
 export default Hand;

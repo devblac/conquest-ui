@@ -14,22 +14,33 @@ export const Game = ({ manager }) => {
   const selectedHandCards = manager.selectedHandCards;
   const gameState = manager.gameState;
 
-  const toggleCardSelection = (handCard) => {
+  const toggleCardSelection = (handCard, {up_to_n, exactly_n, until_n_left}) => {
     // Only allow selecting cards if the game is in a state where you can select cards
     if (!canSelectCards(gameState)) {
       return;
     }
 
+    const isSelected = selectedHandCards.map(hc => hc.index).includes(handCard.index);
+
+    // If we're adding a card to selection, we need to honor the selection constraints
+    if (!isSelected) {
+      if (until_n_left) {
+        exactly_n = gameState.players[gameState.turnPlayerID].hand.handCards.length - until_n_left;
+      }
+      if (up_to_n && selectedHandCards.length >= up_to_n) {
+        return;
+      }
+      if (exactly_n && selectedHandCards.length >= exactly_n) {
+        return;
+      }
+    }
+
     // Given an array of selected hand cards and a card,
     // create a new array with the card either added or removed,
     // depending on whether it's already in the array.
-    const toggle = (prevSelected, handCard) => {
-      if (prevSelected.map(hc => hc.index).includes(handCard.index)) {
-        return prevSelected.filter(hc => hc.index !== handCard.index);
-      } else {
-        return [...prevSelected, handCard];
-      }
-    }
+    const toggle = (prevSelected, handCard) => isSelected ?
+        prevSelected.filter(hc => hc.index !== handCard.index) :
+        [...prevSelected, handCard];
 
     // Update the selected hand cards in the manager, and trigger a re-render
     setTrigger(manager.setSelectedHandCards(toggle(selectedHandCards, handCard)));
