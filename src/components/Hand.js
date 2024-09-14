@@ -2,19 +2,22 @@ import React from 'react';
 import Grid from '@mui/material/Grid2';
 import Card from './Card';
 
-const Hand = ({ gameState, playerID, handCards, handleAction }) => {
-    
-    const resolveAction = (index, playerID) => {
+const Hand = ({ gameState, playerID, handCards, handleAction, toggleCardSelection, selectedHandCards }) => {
+  const resolveAction = (handCard, playerID) => {
+        const index = handCard.index;
         const action = gameState.possibleActions.find(action =>
           action.playerID === playerID &&
           action.kind === "reveal_card" &&
           action.HandCard &&
           action.HandCard.index === index
         );
-        if (!action) {
-          console.error(`Action not found for index: ${index}`);
-        return null;
-        };
+        if (canSelectCards(gameState) && toggleCardSelection) {
+          return () => toggleCardSelection(handCard)
+        }
+        // if (!action) {
+        //   console.error(`Action not found for index: ${index}`);
+        //   return null;
+        // };
         return () => {
             console.log('This is an action', action);
             handleAction(action);
@@ -32,13 +35,21 @@ const Hand = ({ gameState, playerID, handCards, handleAction }) => {
             treasuresCost={handCard.card.treasuresCost}
             cardType={handCard.card.cardType}
             isRevealed={handCard.isRevealed}
-            handleAction={resolveAction(handCard.index, playerID)}
+            handleAction={resolveAction(handCard, playerID)}
             playerID={playerID}
+            isSelected={(selectedHandCards || []).some(hc => hc.index === handCard.index)}
           />
         </Grid>
       ))}
     </Grid>
   );
 };
+
+const canSelectCards = (gameState) => {
+  return gameState.possibleActions.some(action =>
+    action.kind === "discard_cards" ||
+    action.kind === "trash_cards"
+  );
+}
 
 export default Hand;

@@ -5,11 +5,10 @@ import PlayerInfo from '../components/PlayerInfo';
 import LeftBoard from '../components/LeftBoard';
 import TurnInfo from '../components/TurnInfo';
 
-const LeftColumn = ({ gameState, handleAction }) => {
+const LeftColumn = ({ gameState, handleAction, selectedHandCards }) => {
   const cardPiles = gameState.board.cardPiles;
   const playerInfo = gameState.players[0];
   const actionInProgress = gameState.actionInProgress;
-
 
   return (
     <Box sx={{ width: '100%', height: '100%' }}>
@@ -66,6 +65,7 @@ const LeftColumn = ({ gameState, handleAction }) => {
             roundNumber={gameState.roundNumber}
             turnPlayerID={gameState.turnPlayerID}
             turnPhase={gameState.turnPhase}
+            selectedHandCards={selectedHandCards}
           />
           </Box>
         </Grid>

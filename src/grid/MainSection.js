@@ -16,7 +16,7 @@ const actionIcons = {
   resign: <ExitToAppIcon />,
 };
 
-const MainSection = ({ gameState, handleAction }) => {
+const MainSection = ({ gameState, handleAction, selectedHandCards, toggleCardSelection }) => {
   const playerHandCards = gameState.players[gameState.youPlayerID].hand.handCards;
   const opponentHandCards = gameState.players[gameState.opponentPlayerID].hand.handCards;
   const cardPiles = gameState.board.cardPiles;
@@ -31,7 +31,7 @@ const MainSection = ({ gameState, handleAction }) => {
   {
     const isValidAction = ['end_actions', 'end_buys', 'reveal_all_treasures', 'resign'].includes(action.kind) && action.playerID === gameState.youPlayerID;
     if (!action.HandCard || !action.HandCard.card) {
-        console.error('Action missing HandCard or card data:', action);
+        // console.error('Action missing HandCard or card data:', action);
         return false; // Skip actions that are missing essential data
     }
     return isValidAction;
@@ -158,7 +158,7 @@ const MainSection = ({ gameState, handleAction }) => {
               minWidth: '300px'
             }}
           >
-            <Hand gameState={gameState} playerID={gameState.youPlayerID} handCards={unrevealedPlayerCards} handleAction={handleAction} />
+            <Hand gameState={gameState} playerID={gameState.youPlayerID} handCards={unrevealedPlayerCards} handleAction={handleAction} toggleCardSelection={toggleCardSelection} selectedHandCards={selectedHandCards} />
           </Box>
         </Grid>
       </Grid>
