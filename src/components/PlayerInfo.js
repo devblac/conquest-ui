@@ -10,7 +10,7 @@ const PlayerInfo = ({ actions, buys, coins, victoryPoints, treasures, actionInPr
       <Typography variant="h6">Coins: {coins}</Typography>
       <Typography variant="h6">Victory Points: {victoryPoints}</Typography>
       <Typography variant="h6">Treasures: {treasures}</Typography>
-      <Typography variant="h6">Action in Progress: {actionInProgress}</Typography>
+      <Typography variant="h6">Action in Progress: {actionInProgress != null}</Typography>
     </Box>
   );
 };

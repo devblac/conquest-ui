@@ -12,12 +12,46 @@ import MoatModal from './MoatModal';
 export const Game = ({ manager }) => {
   const [trigger, setTrigger] = useState(0);
 
+  const selectedHandCards = manager.selectedHandCards;
+  const gameState = manager.gameState;
+
+  const toggleCardSelection = (handCard, {up_to_n, exactly_n, until_n_left}) => {
+    // Only allow selecting cards if the game is in a state where you can select cards
+    if (!canSelectCards(gameState)) {
+      return;
+    }
+
+    const isSelected = selectedHandCards.map(hc => hc.index).includes(handCard.index);
+
+    // If we're adding a card to selection, we need to honor the selection constraints
+    if (!isSelected) {
+      if (until_n_left) {
+        exactly_n = gameState.players[gameState.turnPlayerID].hand.handCards.length - until_n_left;
+      }
+      if (up_to_n && selectedHandCards.length >= up_to_n) {
+        return;
+      }
+      if (exactly_n && selectedHandCards.length >= exactly_n) {
+        return;
+      }
+    }
+
+    // Given an array of selected hand cards and a card,
+    // create a new array with the card either added or removed,
+    // depending on whether it's already in the array.
+    const toggle = (prevSelected, handCard) => isSelected ?
+        prevSelected.filter(hc => hc.index !== handCard.index) :
+        [...prevSelected, handCard];
+
+    // Update the selected hand cards in the manager, and trigger a re-render
+    setTrigger(manager.setSelectedHandCards(toggle(selectedHandCards, handCard)));
+  };
+
   const handleAction = action => {
     console.log('MainGame action', action);
     setTrigger(manager.runAction(action, setTrigger))
   }
 
-  const gameState = manager.gameState;
   // Here I can check current gameState
   console.log('gameState ', gameState);
   
@@ -46,13 +80,13 @@ export const Game = ({ manager }) => {
           item xs={4} md={4} sx={{ height: '100%', width: '30%' }}
           display="flex" justifyContent="center" alignItems="center"
         >
-          <LeftColumn gameState={gameState} handleAction={handleAction} />
+          <LeftColumn gameState={gameState} handleAction={handleAction} selectedHandCards={selectedHandCards} />
         </Grid>
         <Grid
           item xs={4} sx={{ height: '100%', width: '40%' }}
           display="flex" justifyContent="center" alignItems="center"
         >
-          <MainSection gameState={gameState} handleAction={handleAction} />
+          <MainSection gameState={gameState} handleAction={handleAction} selectedHandCards={selectedHandCards} toggleCardSelection={toggleCardSelection} />
         </Grid>
         <Grid
           item xs={4} sx={{ height: '100%', width: '30%' }}
@@ -68,6 +102,13 @@ export const Game = ({ manager }) => {
         />
       </Grid>
     </Box>
+  );
+}
+
+const canSelectCards = (gameState) => {
+  return gameState.possibleActions.some(action =>
+    action.kind === "discard_cards" ||
+    action.kind === "trash_cards"
   );
 }
 

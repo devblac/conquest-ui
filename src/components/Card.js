@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { cardSkeletons } from '../utils/CardsSkeletons';
 
-const Card = ({ id, displayName, description, treasuresCost, cardType, isRevealed, handleAction, remainingCount }) => {
+const Card = ({ id, displayName, description, treasuresCost, cardType, isRevealed, handleAction, remainingCount, isSelected }) => {
     if (!id || !displayName || !cardType) {
         console.error('Card data is incomplete or missing:', { id, displayName, cardType });
         return null; // Return nothing if card data is missing
@@ -19,6 +19,8 @@ const Card = ({ id, displayName, description, treasuresCost, cardType, isReveale
     //     console.log('Action for this card:', id, handleAction);
     // }, [handleAction]);
   
+    const extraProps = isSelected ? {border: '5px solid red'} : {}
+
     return (
         <Box
             sx={{
@@ -42,7 +44,8 @@ const Card = ({ id, displayName, description, treasuresCost, cardType, isReveale
                 '&:hover': {
                     boxShadow: handleAction ? '0px 0px 20px rgba(0, 0, 0, 0.3)' : '0px 0px 10px rgba(0, 0, 0, 0.15)',
                     transform: handleAction ? 'scale(1.02)' : 'none' // Slight zoom effect
-                }
+                },
+                ...extraProps
             }}
             onClick={handleAction}
         >
