@@ -7,6 +7,9 @@ export class GameStateManager {
 
         // These are selected hand cards, used for actions like discard_cards, trash_cards.
         this.selectedHandCards = [];
+
+        // These are selected cards used on the ConquestDialog component.
+        this.conquestDialogSelectedCards = [];
     }
 
     start() {
@@ -90,6 +93,11 @@ export class GameStateManager {
     setSelectedHandCards(shc) {
         this.selectedHandCards = shc;
         return this.selectedHandCards;
+    }
+
+    setConquestDialogSelectedCards(sc) {
+        this.conquestDialogSelectedCards = sc;
+        return this.conquestDialogSelectedCards;
     }
 }
 

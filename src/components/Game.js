@@ -8,6 +8,7 @@ import LeftColumn from '../grid/LeftColumn';
 import MainSection from '../grid/MainSection';
 import RightColumn from '../grid/RightColumn';
 import MoatModal from './MoatModal';
+import ConquestDialog from './ConquestDialog';
 
 export const Game = ({ manager }) => {
   const [trigger, setTrigger] = useState(0);
@@ -99,6 +100,19 @@ export const Game = ({ manager }) => {
           open={hasMoatActions(gameState)}
           yesAction={() => handleAction(yesAction(gameState))}
           noAction={() => handleAction(noAction(gameState))}
+        />
+        <ConquestDialog
+          open={true}
+          dialogTitle="Conquest Modal Example"
+          happyButton={{ label: "Yes", action: () => console.log("Yes") }}
+          sadButton={{ label: "No", action: () => console.log("No") }}
+          cards={null}
+          handCards={gameState.players[gameState.youPlayerID].hand.handCards}
+          up_to_n={1}
+          setTrigger={setTrigger}
+          conquestDialogSelectedCards={manager.conquestDialogSelectedCards}
+          setConquestDialogSelectedCards={(cs) => manager.conquestDialogSelectedCards = cs }
+          canSelectCards={true}
         />
       </Grid>
     </Box>
