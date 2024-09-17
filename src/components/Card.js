@@ -3,23 +3,16 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { cardSkeletons } from '../utils/CardsSkeletons';
 
-const Card = ({ id, displayName, description, treasuresCost, cardType, isRevealed, handleAction, remainingCount, isSelected }) => {
+const Card = ({ id, displayName, description, treasuresCost, cardType, isRevealed, handleAction, remainingCount, isSelected, playerID, gameState }) => {
     if (!id || !displayName || !cardType) {
         console.error('Card data is incomplete or missing:', { id, displayName, cardType });
         return null; // Return nothing if card data is missing
     }
     const src = `${process.env.PUBLIC_URL}/img/${id}.webp`;
     const skeleton = cardSkeletons[cardType];
-    //  isRevealed, handleAction, remainingCount
-    useEffect(() => {
-        // Placeholder for additional effects
-    }, [handleAction]); // actionInProgress
-
-    // useEffect(() => {
-    //     console.log('Action for this card:', id, handleAction);
-    // }, [handleAction]);
-  
-    const extraProps = isSelected ? {border: '5px solid red'} : {}
+    const extraProps = isSelected ? { border: '5px solid red' } : {}
+    const isPlayerCard = playerID === gameState.youPlayerID;
+    const cardImageVisibility = isRevealed || isPlayerCard;
 
     return (
         <Box
@@ -47,7 +40,7 @@ const Card = ({ id, displayName, description, treasuresCost, cardType, isReveale
                 },
                 ...extraProps
             }}
-            onClick={handleAction}
+            onClick={handleAction ? handleAction : null}
         >
             {/* Remaining Cards Count in the top-left corner */}
             {remainingCount !== undefined && (
@@ -69,8 +62,8 @@ const Card = ({ id, displayName, description, treasuresCost, cardType, isReveale
                 </Typography>
             )}
 
-            {/* Card Image if not obfuscated */}
-            {isRevealed && id !== 'obfuscated' && (
+            {/* Card Image if it belongs to the player, even if unrevealed */}
+            {cardImageVisible && (
                 <Box
                     component="img"
                     src={src}
@@ -80,7 +73,8 @@ const Card = ({ id, displayName, description, treasuresCost, cardType, isReveale
                         height: '80px',
                         objectFit: 'cover',
                         borderRadius: '4px',
-                        marginBottom: '8px'
+                        marginBottom: '8px',
+                        opacity: isRevealed ? 1 : 0.5 // Dim the image if it's unrevealed
                     }}
                 />
             )}

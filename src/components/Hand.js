@@ -15,13 +15,11 @@ const Hand = ({ gameState, playerID, handCards, handleAction, toggleCardSelectio
         if (!action) {
           return null; // No action, no click event
         }
+
         if (canSelectCards(gameState) && toggleCardSelection) {
           return () => toggleCardSelection(handCard, findSelectCardsAction(gameState))
         }
-        // if (!action) {
-        //   console.error(`Action not found for index: ${index}`);
-        //   return null;
-        // };
+
         return () => {
             console.log('This is an action', action);
             console.log('Are we gonna keep this?', action);
@@ -43,6 +41,7 @@ const Hand = ({ gameState, playerID, handCards, handleAction, toggleCardSelectio
             handleAction={resolveAction(handCard, playerID)}
             playerID={playerID}
             isSelected={(selectedHandCards || []).some(hc => hc.index === handCard.index)}
+            gameState={gameState}
           />
         </Grid>
       ))}
