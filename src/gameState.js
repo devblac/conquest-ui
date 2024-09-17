@@ -37,6 +37,7 @@ export class GameStateManager {
             // Run the action and update the gameState
             this.gameState = jsRunAction(action);
             this.selectedHandCards = []; // Reset selected hand cards after running any action
+            this.conquestDialogSelectedCards = []; // Reset selected hand cards after running any action
         } else {
             // It's the bot's turn
             const changed = this.runBotAction();

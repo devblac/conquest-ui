@@ -17,6 +17,8 @@ const ConquestDialog = ({
   setConquestDialogSelectedCards, // Pass the function that updates the selected cards
   canSelectCards // If not passed or false, no cards can be selected
 }) => {
+  conquestDialogSelectedCards = conquestDialogSelectedCards || [];
+
   // Accept either cards or handCards
   let resolvedCards = cards;
   if (handCards) {
@@ -61,6 +63,11 @@ const ConquestDialog = ({
     setTrigger(setConquestDialogSelectedCards(toggle(conquestDialogSelectedCards, card)));
   };
   
+  if (until_n_left) {
+    exactly_n = resolvedCards.length - until_n_left;
+  }
+  const areButtonsEnabled = !canSelectCards || (exactly_n > 0 && exactly_n === conquestDialogSelectedCards.length);
+
   return (
     <Modal
       open={open}
@@ -95,21 +102,21 @@ const ConquestDialog = ({
         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
           {resolvedCards.map((card) => (
             <Card
-              key={card.id}
+              key={card.index}
               id={card.id}
               displayName={card.displayName}
               cardType={card.cardType}
               isRevealed={true}
               handleAction={() => toggleCardSelection(card, {up_to_n, exactly_n, until_n_left})}
-              isSelected={false}
+              isSelected={conquestDialogSelectedCards.map(hc => hc.index).includes(card.index)}
             />
           ))}
         </Box>
         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-          {happyButton && <Button onClick={happyButton.handleAction} variant="contained" color="primary" sx={{ mr: 2 }}>
+          {happyButton && areButtonsEnabled && <Button onClick={() => setTrigger(happyButton.handleAction())} variant="contained" color="primary" sx={{ mr: 2 }}>
             {happyButton.label}
           </Button>}
-          {sadButton && <Button onClick={sadButton.handleAction} variant="contained" color="secondary">
+          {sadButton && areButtonsEnabled && <Button onClick={() => setTrigger(sadButton.handleAction())} variant="contained" color="secondary">
             {sadButton.label}
           </Button>}
         </Box>

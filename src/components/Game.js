@@ -7,7 +7,6 @@ import Box from '@mui/material/Box';
 import LeftColumn from '../grid/LeftColumn';
 import MainSection from '../grid/MainSection';
 import RightColumn from '../grid/RightColumn';
-import MoatModal from './MoatModal';
 import ConquestDialog from './ConquestDialog';
 
 export const Game = ({ manager }) => {
@@ -17,6 +16,7 @@ export const Game = ({ manager }) => {
   const gameState = manager.gameState;
 
   const toggleCardSelection = (handCard, {up_to_n, exactly_n, until_n_left}) => {
+    console.log('toggleCardSelection', handCard, {up_to_n, exactly_n, until_n_left}, canSelectCards(gameState));
     // Only allow selecting cards if the game is in a state where you can select cards
     if (!canSelectCards(gameState)) {
       return;
@@ -96,23 +96,74 @@ export const Game = ({ manager }) => {
           <RightColumn gameState={gameState} handleAction={handleAction} />
 
         </Grid>
-        <MoatModal 
-          open={hasMoatActions(gameState)}
-          yesAction={() => handleAction(yesAction(gameState))}
-          noAction={() => handleAction(noAction(gameState))}
-        />
+        {/* Moat modal */}
         <ConquestDialog
-          open={true}
-          dialogTitle="Conquest Modal Example"
-          happyButton={{ label: "Yes", action: () => console.log("Yes") }}
-          sadButton={{ label: "No", action: () => console.log("No") }}
-          cards={null}
-          handCards={gameState.players[gameState.youPlayerID].hand.handCards}
-          up_to_n={1}
+          open={hasMoatActions(gameState)}
+          dialogTitle="Use Moat?"
+          happyButton={{ label: "Yes", handleAction: () => handleAction(yesAction(gameState)) }}
+          sadButton={{ label: "No", handleAction: () => handleAction(noAction(gameState)) }}
+          handCards={gameState.players[gameState.youPlayerID].hand.handCards.filter(handCard => handCard.card.id === "moat")}
           setTrigger={setTrigger}
-          conquestDialogSelectedCards={manager.conquestDialogSelectedCards}
-          setConquestDialogSelectedCards={(cs) => manager.conquestDialogSelectedCards = cs }
+        />
+        {/* Library modal */}
+        <ConquestDialog
+          open={hasActionsOfKinds(gameState, ["keep_card"])}
+          dialogTitle="Keep this action card?"
+          happyButton={{ label: "Yes", handleAction: () => handleAction(keepAction(gameState, true)) }}
+          sadButton={{ label: "No", handleAction: () => handleAction(keepAction(gameState, false)) }}
+          handCards={keepAction(gameState, true).hand_card ? [keepAction(gameState, true).hand_card] : []}
+          setTrigger={setTrigger}
+        />
+        {/* Bandit modal */}
+        <ConquestDialog
+          open={hasActionsOfKinds(gameState, ["discard_and_trash_cards"])}
+          dialogTitle="Choose which treasure card to trash"
+          happyButton={{ label: "Trash selected", handleAction: () => {
+            if (manager.conquestDialogSelectedCards.length !== 1) {
+              return;
+            }
+            const selectedHandCard = manager.conquestDialogSelectedCards[0];
+            const action = getActionOfKinds(gameState, ["discard_and_trash_cards"])  
+            const handCards = [action.discard_hand_card, action.trash_hand_card];
+            const trashHandCard = handCards.find(hc => hc.card.index === selectedHandCard.index);
+            const discardHandCard = handCards.find(hc => hc.card.index !== selectedHandCard.index);
+              handleAction(discardAndTrashCardsAction(gameState, discardHandCard, trashHandCard)) 
+            }
+          }}
+          handCards={
+            (() => {
+              const action = getActionOfKinds(gameState, ["discard_and_trash_cards"]);
+              return action ? [action.discard_hand_card, action.trash_hand_card] : [];
+            })()
+          }
+          setTrigger={setTrigger}
           canSelectCards={true}
+          exactly_n={1}
+          conquestDialogSelectedCards={manager.conquestDialogSelectedCards}
+          setConquestDialogSelectedCards={(cs) => manager.setConquestDialogSelectedCards(cs)}
+        />
+        {/* Vassal modal */}
+        <ConquestDialog
+          open={hasVassalActions(gameState)}
+          dialogTitle="Play this action card?"
+          happyButton={{ label: "Yes", handleAction: () => handleAction(getActionOfKinds(gameState, ['yes'])) }}
+          sadButton={{ label: "No", handleAction: () => handleAction(getActionOfKinds(gameState, ['no'])) }}
+          handCards={[gameState.players[gameState.youPlayerID].hand.handCards[gameState.players[gameState.youPlayerID].hand.handCards.length - 1]]}
+          setTrigger={setTrigger}
+        />
+        {/* Harbinger modal */}
+        <ConquestDialog
+          open={hasActionsOfKinds(gameState, ['move_discarded_to_deck'])}
+          dialogTitle="Which card do you want to topdeck?"
+          happyButton={{ label: "Topdeck", handleAction: () => handleAction(moveDiscardedToDeckAction(gameState, manager.conquestDialogSelectedCards[0])) }}
+          // TODO: Harbinger has no way to not topdeck
+          // sadButton={{ label: "Don't Topdeck", action: () => handleAction(getActionOfKinds(gameState, ['move_discarded_to_deck'])) }}
+          cards={gameState.players[gameState.youPlayerID].discardPile.cards}
+          setTrigger={setTrigger}
+          canSelectCards={true}
+          exactly_n={1}
+          conquestDialogSelectedCards={manager.conquestDialogSelectedCards}
+          setConquestDialogSelectedCards={(cs) => manager.setConquestDialogSelectedCards(cs)}
         />
       </Grid>
     </Box>
@@ -126,9 +177,21 @@ const canSelectCards = (gameState) => {
   );
 }
 
+const hasActionsOfKinds = (gameState, kinds) => {
+  return gameState.possibleActions.some(action => kinds.includes(action.kind));
+}
+
+const getActionOfKinds = (gameState, kinds) => {
+  return gameState.possibleActions.find(action => kinds.includes(action.kind));
+}
+
 function hasMoatActions(gameState) {
-  // At the moment, yes/no is only for Moat, so let's just check for that.
-  return gameState.possibleActions.some(action => action.kind === "yes") &&
+  return gameState.possibleActions.some(action => action.kind === "yes" && action.context === "uses moat") &&
+    gameState.possibleActions.some(action => action.kind === "no");
+}
+
+function hasVassalActions(gameState) {
+  return gameState.possibleActions.some(action => action.kind === "yes" && action.context === "plays action card") &&
     gameState.possibleActions.some(action => action.kind === "no");
 }
 
@@ -138,4 +201,32 @@ function yesAction(gameState) {
 
 function noAction(gameState) {
   return gameState.possibleActions.find(action => action.kind === "no");
+}
+
+function keepAction(gameState, withKeepValue) {
+  const action = gameState.possibleActions.find(action => action.kind === "keep_card");
+  if (!action) {
+    return {};
+  }
+  action.keep = withKeepValue;
+  return action;
+}
+
+function discardAndTrashCardsAction(gameState, withDiscardHandCard, withTrashHandCard) {
+  const action = gameState.possibleActions.find(action => action.kind === "discard_and_trash_cards");
+  if (!action) {
+    return {};
+  }
+  action.discard_hand_card = withDiscardHandCard;
+  action.trash_hand_card = withTrashHandCard;
+  return action;
+}
+
+function moveDiscardedToDeckAction(gameState, withCard) {
+  const action = gameState.possibleActions.find(action => action.kind === "move_discarded_to_deck");
+  if (!action) {
+    return {};
+  }
+  action.card = withCard;
+  return action;
 }
