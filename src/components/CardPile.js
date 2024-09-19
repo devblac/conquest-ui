@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Card from './Card';
 
-const CardPile = ({ card, count, handleAction, actionInProgress }) => {
+const CardPile = ({ card, count, handleAction, actionInProgress, isGainable, gameState }) => {
   return (
     <Box sx={{
         width: '100px',
@@ -32,6 +32,8 @@ const CardPile = ({ card, count, handleAction, actionInProgress }) => {
         handleAction={handleAction}
         actionInProgress={actionInProgress}
         remainingCount={count}
+        isGainable={isGainable}
+        gameState={gameState}
       />
       <Typography variant="body2" sx={{ marginTop: '8px', color: 'black' }}>
         Remaining: {count}

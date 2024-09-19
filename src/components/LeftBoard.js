@@ -22,6 +22,29 @@ const LeftBoard = ({ cardPiles, gameState, handleAction, actionInProgress }) => 
     };
   };
 
+  const resolveGainAction = (cardId, playerID) => {
+    const action = gameState.possibleActions.find(action => 
+      action.kind === 'gain_card' && 
+      action.card.id === cardId && 
+      action.playerID === playerID
+    );
+    if (!action) return null;
+    return () => {
+      console.log('Gain action:', action);
+      handleAction(action);
+    };
+  };
+
+  const resolveAction = (cardId, playerID) => {
+    const buyAction = resolveBuyAction(cardId, playerID);
+    if (buyAction) return buyAction;
+    
+    const gainAction = resolveGainAction(cardId, playerID);
+    if (gainAction) return gainAction;
+    
+    return null;
+  };
+
   return (
     <Grid container spacing={2} sx={{ justifyContent: 'center' }}>
       {treasureVictoryCardPiles.map((pile, index) => (
@@ -29,9 +52,11 @@ const LeftBoard = ({ cardPiles, gameState, handleAction, actionInProgress }) => 
           <CardPile
             card={pile.card}
             count={pile.count}
-            handleAction={resolveBuyAction(pile.card.id, gameState.youPlayerID)}
+            handleAction={resolveAction(pile.card.id, gameState.youPlayerID)}
             actionInProgress={actionInProgress}
             skeleton={miniCardSkeletons[pile.card.cardType]}
+            gameState={gameState}
+            isGainable={resolveGainAction(pile.card.id, gameState.youPlayerID) !== null}
           />
         </Grid>
       ))}

@@ -3,14 +3,15 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { cardSkeletons } from '../utils/CardsSkeletons';
 
-const Card = ({ id, displayName, description, treasuresCost, cardType, isRevealed, handleAction, remainingCount, isSelected, playerID, gameState }) => {
+const Card = ({ id, displayName, description, treasuresCost, cardType, isRevealed, handleAction, remainingCount, isSelected, playerID, gameState, isGainable }) => {
     if (!id || !displayName || !cardType) {
         console.error('Card data is incomplete or missing:', { id, displayName, cardType });
         return null; // Return nothing if card data is missing
     }
+
     const src = `${process.env.PUBLIC_URL}/img/${id}.webp`;
     const skeleton = cardSkeletons[cardType];
-    const extraProps = isSelected ? { border: '5px solid red' } : {}
+    const extraProps = isSelected ? { border: '5px solid red' } : isGainable ? { border: '5px solid green' } : {}
     const isPlayerCard = playerID === gameState.youPlayerID;
     const cardImageVisibility = isRevealed || isPlayerCard;
 
@@ -63,7 +64,7 @@ const Card = ({ id, displayName, description, treasuresCost, cardType, isReveale
             )}
 
             {/* Card Image if it belongs to the player, even if unrevealed */}
-            {cardImageVisible && (
+            {cardImageVisibility && (
                 <Box
                     component="img"
                     src={src}
