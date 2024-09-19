@@ -2,19 +2,20 @@ import React from 'react';
 import Grid from '@mui/material/Grid2';
 import Card from './Card';
 
-const Hand = ({ gameState, playerID, handCards, handleAction }) => {
-    
-    const resolveAction = (index, playerID) => {
+const Hand = ({ gameState, playerID, handCards, handleAction, toggleCardSelection, selectedHandCards }) => {
+  const resolveAction = (handCard, playerID) => {
+        const index = handCard.index;
         const action = gameState.possibleActions.find(action =>
           action.playerID === playerID &&
           action.kind === "reveal_card" &&
           action.HandCard &&
           action.HandCard.index === index
         );
-        if (!action) {
-          console.error(`Action not found for index: ${index}`);
-        return null;
-        };
+    
+        if (canSelectCards(gameState) && toggleCardSelection) {
+          return () => toggleCardSelection(handCard, findSelectCardsAction(gameState))
+        }
+
         return () => {
             console.log('This is an action', action);
             console.log('Are we gonna keep this?', action);
@@ -33,13 +34,20 @@ const Hand = ({ gameState, playerID, handCards, handleAction }) => {
             treasuresCost={handCard.card.treasuresCost}
             cardType={handCard.card.cardType}
             isRevealed={handCard.isRevealed}
-            handleAction={resolveAction(handCard.index, playerID)}
+            handleAction={resolveAction(handCard, playerID)}
             playerID={playerID}
+            isSelected={(selectedHandCards || []).some(hc => hc.index === handCard.index)}
+            gameState={gameState}
           />
         </Grid>
       ))}
     </Grid>
   );
 };
+
+const findActionByKinds = (gameState, kinds) => gameState.possibleActions.find(action => kinds.includes(action.kind));
+const findSelectCardsAction = (gameState) => findActionByKinds(gameState, ["discard_cards", "trash_cards"]);
+const canSelectCards = (gameState) => findSelectCardsAction(gameState) !== undefined;
+
 
 export default Hand;
