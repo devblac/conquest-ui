@@ -78,19 +78,19 @@ export const Game = ({ manager }) => {
     <Box sx={{ width: '100%', height: '100vh', flexGrow: 1 }}>
       <Grid container spacing={0} columns={3} sx={{ height: '100%', width: '100%' }}>
         <Grid 
-          item xs={4} md={4} sx={{ height: '100%', width: '30%' }}
+          item xs={4} md={4} sx={{ height: '100%', width: '20%' }}
           display="flex" justifyContent="center" alignItems="center"
         >
           <LeftColumn gameState={gameState} handleAction={handleAction} selectedHandCards={selectedHandCards} />
         </Grid>
         <Grid
-          item xs={4} sx={{ height: '100%', width: '40%' }}
+          item xs={4} sx={{ height: '100%', width: '60%' }}
           display="flex" justifyContent="center" alignItems="center"
         >
           <MainSection gameState={gameState} handleAction={handleAction} selectedHandCards={selectedHandCards} toggleCardSelection={toggleCardSelection} />
         </Grid>
         <Grid
-          item xs={4} sx={{ height: '100%', width: '30%' }}
+          item xs={4} sx={{ height: '100%', width: '20%' }}
           display="flex" justifyContent="center" alignItems="center"
         >
           <RightColumn gameState={gameState} handleAction={handleAction} />

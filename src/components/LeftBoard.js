@@ -46,21 +46,27 @@ const LeftBoard = ({ cardPiles, gameState, handleAction, actionInProgress }) => 
   };
 
   return (
-    <Grid container spacing={2} sx={{ justifyContent: 'center' }}>
-      {treasureVictoryCardPiles.map((pile, index) => (
-        <Grid item key={index} xs={4} sm={3} md={2} sx={{ display: 'flex', justifyContent: 'center' }}>
-          <CardPile
-            card={pile.card}
-            count={pile.count}
-            handleAction={resolveAction(pile.card.id, gameState.youPlayerID)}
-            actionInProgress={actionInProgress}
-            skeleton={miniCardSkeletons[pile.card.cardType]}
-            gameState={gameState}
-            isGainable={resolveGainAction(pile.card.id, gameState.youPlayerID) !== null}
-          />
-        </Grid>
-      ))}
-    </Grid>
+    <>
+    {Array.from({ length: Math.ceil(treasureVictoryCardPiles.length / 2) }).map((_, rowIndex) => (
+      <Grid container direction='row' spacing={2} key={rowIndex} sx={{ marginBottom: 2 }}>
+        <Grid item size='grow'></Grid>
+        {treasureVictoryCardPiles.slice(rowIndex * 2, rowIndex * 2 + 2).map((pile, index) => (
+          <Grid item key={index}>
+            <CardPile
+              card={pile.card}
+              count={pile.count}
+              handleAction={resolveAction(pile.card.id, gameState.youPlayerID)}
+              actionInProgress={actionInProgress}
+              skeleton={miniCardSkeletons[pile.card.cardType]}
+              gameState={gameState}
+              isGainable={resolveGainAction(pile.card.id, gameState.youPlayerID) !== null}
+            />
+          </Grid>
+        ))}
+        <Grid item size='grow'></Grid>
+      </Grid>
+    ))}
+    </>
   );
 };
 

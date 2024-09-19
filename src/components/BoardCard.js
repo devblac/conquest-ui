@@ -18,8 +18,8 @@ const Card = ({ id, displayName, description, treasuresCost, cardType, isReveale
     return (
         <Box
             sx={{
-                width: '11vh',
-                height: '17vh',
+                width: '16vh',
+                height: '15.5vh',
                 border: '3px solid black',
                 borderRadius: '8px',
                 boxShadow: isRevealed ? '0px 0px 12px rgba(0, 0, 0, 0.2)' : '0px 0px 5px rgba(0, 0, 0, 0.1)',
@@ -29,7 +29,7 @@ const Card = ({ id, displayName, description, treasuresCost, cardType, isReveale
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                backgroundColor: '#fff',
+                backgroundColor: 'black',
                 backgroundImage: `url(${skeleton})`,
                 backgroundSize: 'contain',
                 backgroundPosition: 'top',
@@ -45,6 +45,27 @@ const Card = ({ id, displayName, description, treasuresCost, cardType, isReveale
             }}
             onClick={handleAction ? handleAction : null}
         >
+
+            {/* Card Image if it belongs to the player, even if unrevealed */}
+            {cardImageVisibility && (
+                <Box
+                    component="img"
+                    src={src}
+                    sx={{
+                        position: 'absolute',
+                        top: '2.8vh',
+                        left: '0.5vh',
+                        width: '14vh',
+                        height: '9.6vh',
+                        objectFit: 'cover',
+                        // zIndex: -1,
+                        borderRadius: '4px',
+                        marginBottom: '8px',
+                        opacity: isRevealed ? 1 : 0.5 // Dim the image if it's unrevealed
+                    }}
+                />
+            )}
+
             {/* Remaining Cards Count in the top-left corner */}
             {remainingCount !== undefined && (
                 <Typography
@@ -67,36 +88,29 @@ const Card = ({ id, displayName, description, treasuresCost, cardType, isReveale
                 </Typography>
             )}
 
-            {/* Card Image if it belongs to the player, even if unrevealed */}
-            {cardImageVisibility && (
-                <Box
-                    component="img"
-                    src={src}
-                    alt={displayName}
-                    sx={{
-                        width: '80px',
-                        height: '80px',
-                        objectFit: 'cover',
-                        borderRadius: '4px',
-                        marginBottom: '8px',
-                        opacity: 1
-                    }}
-                />
-            )}
+            {/* Cost */}
+            <Typography
+                variant="caption"
+                sx={{
+                    position: 'absolute',
+                    bottom: '0px',
+                    left: '0px',
+                    backgroundColor: 'rgb(185, 135, 0)',
+                    color: 'black',
+                    fontWeight: 'bolder',
+                    borderRadius: '100%',
+                    lineHeight: '1.2',
+                    border: '1px solid black',
+                    padding: '0px 1vh',
+                    fontSize: '2.3vh',
+                }}
+            >
+                {treasuresCost}
+            </Typography>
 
             {/* Display Name of Card */}
-            <Typography variant="h6" sx={{ textAlign: 'center', color: '#333', fontSize: '13px', fontWeight: 'bold', marginTop: '4px' }}>
+            <Typography variant="h6" sx={{ textAlign: 'center', color: '#333', fontSize: '1.5vh', fontWeight: 'bold', marginTop: '0.4vh', marginLeft: '1vh' }}>
                 {displayName}
-            </Typography>
-
-            {/* Card Type and Cost */}
-            <Typography variant="body2" sx={{ textAlign: 'center', color: '#666', fontSize: '10px', marginTop: '2px' }}>
-                {cardType.charAt(0).toUpperCase() + cardType.slice(1)} - Cost: {treasuresCost}
-            </Typography>
-
-            {/* Card Description */}
-            <Typography variant="caption" sx={{ textAlign: 'center', color: '#777', fontSize: '9px', fontStyle: 'italic', marginTop: '4px' }}>
-                {description}
             </Typography>
         </Box>
     );

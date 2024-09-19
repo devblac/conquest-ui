@@ -33,6 +33,7 @@ const LeftColumn = ({ gameState, handleAction, selectedHandCards }) => {
             sx={{
               // backgroundColor: 'lightgreen',
               display: 'flex',
+              flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
               height: '100%',

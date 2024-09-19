@@ -69,19 +69,21 @@ const MainSection = ({ gameState, handleAction, selectedHandCards, toggleCardSel
           </Box>
         </Grid>
         {/* Row 2 */}
-        <Grid item sx={{ flexGrow: 1, overflow: 'auto', minWidth: '300px', minHeight: '10%' }}>
-          <Box
-            sx={{
-              // backgroundColor: 'lightgreen',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              height: '100%',
-            }}
-          >
-            <Hand gameState={gameState} handCards={revealedOpponentCards} />
-          </Box>
-        </Grid>
+        {gameState.turnPlayerID !== gameState.youPlayerID && (
+          <Grid item sx={{ flexGrow: 1, overflow: 'auto', minWidth: '300px', minHeight: '10%' }}>
+            <Box
+              sx={{
+                // backgroundColor: 'lightgreen',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: '100%',
+              }}
+            >
+              <Hand gameState={gameState} handCards={revealedOpponentCards} />
+            </Box>
+          </Grid>
+        )}
         {/* Row 3 */}
         <Grid item sx={{ flexGrow: 1, overflow: 'auto', minWidth: '300px', minHeight: '10%' }}>
           <Box
