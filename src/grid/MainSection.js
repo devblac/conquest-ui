@@ -4,6 +4,7 @@ import Grid from '@mui/material/Grid2';
 import Hand from '../components/Hand';
 import Board from '../components/Board';
 import Button from '@mui/material/Button';
+import TurnInfo from '../components/TurnInfo';
 
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -133,6 +134,7 @@ const MainSection = ({ gameState, handleAction, selectedHandCards, toggleCardSel
             </Box>
           </Box>
         </Grid>
+
         {/* Row 5 */}
         <Grid item sx={{ flexGrow: 1, overflow: 'auto', minWidth: '300px', minHeight: '10%' }}>
           <Box
@@ -147,6 +149,14 @@ const MainSection = ({ gameState, handleAction, selectedHandCards, toggleCardSel
             <Hand gameState={gameState} playerID={gameState.youPlayerID} handCards={revealedPlayerCards} handleAction={handleAction} />
           </Box>
         </Grid>
+        <TurnInfo 
+          gameState={gameState}
+          handleAction={handleAction}
+          roundNumber={gameState.roundNumber}
+          turnPlayerID={gameState.turnPlayerID}
+          turnPhase={gameState.turnPhase}
+          selectedHandCards={selectedHandCards}
+        />
         <Grid item sx={{ flexGrow: 1, overflow: 'auto', minWidth: '300px', minHeight: '10%' }}>
           <Box
             sx={{

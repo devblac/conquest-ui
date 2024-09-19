@@ -48,7 +48,7 @@ const LeftBoard = ({ cardPiles, gameState, handleAction, actionInProgress }) => 
   return (
     <>
     {Array.from({ length: Math.ceil(treasureVictoryCardPiles.length / 2) }).map((_, rowIndex) => (
-      <Grid container direction='row' spacing={2} key={rowIndex} sx={{ marginBottom: 2 }}>
+      <Grid container direction='row' key={rowIndex} sx={{ marginBottom: '0.2vh' }}>
         <Grid item size='grow'></Grid>
         {treasureVictoryCardPiles.slice(rowIndex * 2, rowIndex * 2 + 2).map((pile, index) => (
           <Grid item key={index}>

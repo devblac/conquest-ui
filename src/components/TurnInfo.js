@@ -4,32 +4,31 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
 const TurnInfo = ({ gameState, handleAction, roundNumber, turnPlayerID, turnPhase, selectedHandCards }) => {
-  const endsBuysAction = gameState.possibleActions.find(action => action.kind === "end_buys");
-  const endsActions = gameState.possibleActions.find(action => action.kind === "end_actions");
-  const revealAllTreasuresAction = gameState.possibleActions.find(action => action.kind === "reveal_all_treasures");
+  const endsBuysAction = gameState.possibleActions.find(action => action.kind === "end_buys" && action.playerID === gameState.youPlayerID);
+  const endsActions = gameState.possibleActions.find(action => action.kind === "end_actions" && action.playerID === gameState.youPlayerID);
+  const revealAllTreasuresAction = gameState.possibleActions.find(action => action.kind === "reveal_all_treasures" && action.playerID === gameState.youPlayerID);
   const discardCardsAction = getDiscardCardsAction(gameState, selectedHandCards);
   const trashCardsAction = getTrashCardsAction(gameState, selectedHandCards);
   return (
     <Box sx={{ 
-      padding: '8px',
-      backgroundColor: 'lightblue',
+      padding: '0.5vh',
+      paddingLeft: '3vh',
+      backgroundColor: 'black',
       borderRadius: '8px'
       }}>
-      {endsBuysAction && <Button variant="outlined" onClick={() => handleAction(endsBuysAction) }>End Buys</Button>}
-      {endsActions && <Button variant="outlined" onClick={() => handleAction(endsActions)}>End Actions</Button>}
-      {discardCardsAction && <Button variant="outlined" onClick={() => handleAction(discardCardsAction)}>Discard Cards</Button>}
-      {trashCardsAction && <Button variant="outlined" onClick={() => handleAction(trashCardsAction)}>Trash Cards</Button>}
-      {revealAllTreasuresAction && <Button variant="outlined" onClick={() => handleAction(revealAllTreasuresAction)}>Reveal All Treasures</Button>}
-      <Typography variant="h6">Round: {roundNumber}</Typography>
-      <Typography variant="h6">Current Player: {turnPlayerID}</Typography>
-      <Typography variant="h6">Phase: {turnPhase}</Typography>
+      <Typography component="span" sx={{ color: 'white', fontSize: '2vh', paddingRight: '2vh' }}>{turnPlayerID === gameState.youPlayerID ? 'Your turn' : 'Their turn'}{turnPhase === 'buy' ? ' (buy phase)' : ' (action phase)'}</Typography>
+      {endsBuysAction && <Button variant="outlined" sx={{ marginRight: '1vh' }} onClick={() => handleAction(endsBuysAction) }>End Buys</Button>}
+      {endsActions && <Button variant="outlined" sx={{ marginRight: '1vh' }} onClick={() => handleAction(endsActions)}>End Actions</Button>}
+      {discardCardsAction && <Button variant="outlined" sx={{ marginRight: '1vh' }} onClick={() => handleAction(discardCardsAction)}>Discard Cards</Button>}
+      {trashCardsAction && <Button variant="outlined" sx={{ marginRight: '1vh' }} onClick={() => handleAction(trashCardsAction)}>Trash Cards</Button>}
+      {revealAllTreasuresAction && <Button variant="outlined" sx={{ marginRight: '1vh' }} onClick={() => handleAction(revealAllTreasuresAction)}>Reveal All Treasures</Button>}
     </Box>
   );
 };
 
 
 const findActionByKind = (gameState, kind) => 
-  gameState.possibleActions.find(action => action.kind === kind);
+  gameState.possibleActions.find(action => action.kind === kind && action.playerID === gameState.youPlayerID);
 
 const withHandCards = (action, handCards) => 
   action ? { 

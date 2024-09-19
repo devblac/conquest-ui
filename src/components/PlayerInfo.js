@@ -1,17 +1,20 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid2';
 
-const PlayerInfo = ({ actions, buys, coins, victoryPoints, treasures, actionInProgress }) => {
+const PlayerInfo = ({ player }) => {
+  console.log({player});
   return (
-    <Box sx={{ padding: '16px', backgroundColor: 'lightgray', borderRadius: '8px' }}>
-      <Typography variant="h6">Actions: {actions}</Typography>
-      <Typography variant="h6">Buys: {buys}</Typography>
-      <Typography variant="h6">Coins: {coins}</Typography>
-      <Typography variant="h6">Victory Points: {victoryPoints}</Typography>
-      <Typography variant="h6">Treasures: {treasures}</Typography>
-      <Typography variant="h6">Action in Progress: {actionInProgress != null}</Typography>
-    </Box>
+    <Grid container sx={{ padding: '1vh', backgroundColor: 'black', width: '35vh', fontWeight: 'bolder' }}>
+      <Grid item size={8} sx={{ color: 'white' }}>
+        <Typography sx={{ fontSize: '2.5vh' }}>{player.id === 0 ? 'You' : 'They'}</Typography>
+      </Grid>
+      <Grid item size={4} sx={{ color: '#00FF00', textAlign: 'right' }}>
+        <Typography sx={{ fontSize: '2.5vh' }}>{player.victoryPoints} VP</Typography>
+      </Grid>
+    </Grid>
+
   );
 };
 

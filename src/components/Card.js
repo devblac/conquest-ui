@@ -33,7 +33,7 @@ const Card = ({ id, displayName, description, treasuresCost, cardType, isReveale
                 backgroundImage: `url(${skeleton})`,
                 backgroundSize: 'contain',
                 backgroundPosition: 'top',
-                opacity: isRevealed ? 1 : 0.7,
+                opacity: 1,
                 position: 'relative',
                 cursor: handleAction ? 'pointer' : 'default',
                 transition: 'transform 0.2s ease, box-shadow 0.2s ease',

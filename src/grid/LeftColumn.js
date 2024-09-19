@@ -3,18 +3,18 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid2';
 import PlayerInfo from '../components/PlayerInfo';
 import LeftBoard from '../components/LeftBoard';
-import TurnInfo from '../components/TurnInfo';
 
 const LeftColumn = ({ gameState, handleAction, selectedHandCards }) => {
   const cardPiles = gameState.board.cardPiles;
-  const playerInfo = gameState.players[0];
+  const themPlayer = gameState.players[gameState.opponentPlayerID];
+  const youPlayer = gameState.players[gameState.youPlayerID];
   const actionInProgress = gameState.actionInProgress;
 
   return (
     <Box sx={{ width: '100%', height: '100%' }}>
       <Grid container direction="column" sx={{ height: '100%' }}>
         {/* First Row */}
-        <Grid item sx={{ height: '20%' }}>
+        <Grid item sx={{ height: '10%' }}>
           <Box
             sx={{
               // backgroundColor: 'lightblue',
@@ -24,11 +24,13 @@ const LeftColumn = ({ gameState, handleAction, selectedHandCards }) => {
               height: '100%',
             }}
           >
-            Top Row (20%)
+            <PlayerInfo 
+              player={themPlayer}
+            />
           </Box>
         </Grid>
         {/* Second Row */}
-        <Grid item sx={{ height: '60%' }}>
+        <Grid item sx={{ height: '80%' }}>
           <Box
             sx={{
               // backgroundColor: 'lightgreen',
@@ -43,7 +45,7 @@ const LeftColumn = ({ gameState, handleAction, selectedHandCards }) => {
           </Box>
         </Grid>
         {/* Third Row */}
-        <Grid item sx={{ height: '20%' }}>
+        <Grid item sx={{ height: '10%' }}>
           <Box
             sx={{
               // backgroundColor: 'lightcoral',
@@ -54,20 +56,9 @@ const LeftColumn = ({ gameState, handleAction, selectedHandCards }) => {
             }}
           >
             <PlayerInfo 
-              actions={playerInfo.actions} 
-              buys={playerInfo.buys} 
-              coins={playerInfo.coins} 
-              victoryPoints={playerInfo.victoryPoints} 
-              actionInProgress={actionInProgress}
+              player={youPlayer}
             />
-            <TurnInfo 
-            gameState={gameState}
-            handleAction={handleAction}
-            roundNumber={gameState.roundNumber}
-            turnPlayerID={gameState.turnPlayerID}
-            turnPhase={gameState.turnPhase}
-            selectedHandCards={selectedHandCards}
-          />
+
           </Box>
         </Grid>
       </Grid>
