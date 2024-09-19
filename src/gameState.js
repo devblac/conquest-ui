@@ -7,6 +7,9 @@ export class GameStateManager {
 
         // These are selected hand cards, used for actions like discard_cards, trash_cards.
         this.selectedHandCards = [];
+
+        // These are selected cards used on the ConquestDialog component.
+        this.conquestDialogSelectedCards = [];
     }
 
     start() {
@@ -34,6 +37,7 @@ export class GameStateManager {
             // Run the action and update the gameState
             this.gameState = jsRunAction(action);
             this.selectedHandCards = []; // Reset selected hand cards after running any action
+            this.conquestDialogSelectedCards = []; // Reset selected hand cards after running any action
         } else {
             // It's the bot's turn
             const changed = this.runBotAction();
@@ -90,6 +94,11 @@ export class GameStateManager {
     setSelectedHandCards(shc) {
         this.selectedHandCards = shc;
         return this.selectedHandCards;
+    }
+
+    setConquestDialogSelectedCards(sc) {
+        this.conquestDialogSelectedCards = sc;
+        return this.conquestDialogSelectedCards;
     }
 }
 

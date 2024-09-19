@@ -47,7 +47,7 @@ const satisfiesActionConstraints = (gameState, selectedHandCards, kind) => {
     return false;
   }
 
-  const {up_to_n, exactly_n, until_n_left} = action
+  let {up_to_n, exactly_n, until_n_left} = action
 
   if (until_n_left) {
     exactly_n = gameState.players[gameState.turnPlayerID].hand.handCards.length - until_n_left;

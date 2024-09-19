@@ -11,11 +11,7 @@ const Hand = ({ gameState, playerID, handCards, handleAction, toggleCardSelectio
           action.HandCard &&
           action.HandCard.index === index
         );
-
-        if (!action) {
-          return null; // No action, no click event
-        }
-
+    
         if (canSelectCards(gameState) && toggleCardSelection) {
           return () => toggleCardSelection(handCard, findSelectCardsAction(gameState))
         }
