@@ -9,8 +9,9 @@ const Card = ({ id, displayName, description, treasuresCost, cardType, isReveale
         return null; // Return nothing if card data is missing
     }
 
+    const fixedCardType = id === "curse" ? "curse" : cardType;
     const src = `${process.env.PUBLIC_URL}/img/${id}.webp`;
-    const skeleton = isFromCardPile ? miniCardSkeletons[cardType] : cardSkeletons[cardType];
+    const skeleton = isFromCardPile ? miniCardSkeletons[fixedCardType] : cardSkeletons[fixedCardType];
     const extraProps = isSelected ? { border: '5px solid red' } : isGainable ? { border: '5px solid green' } : {}
     const isPlayerCard = playerID === gameState.youPlayerID;
     const cardImageVisibility = isRevealed || isPlayerCard;
