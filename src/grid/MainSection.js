@@ -60,6 +60,7 @@ const MainSection = ({ gameState, handleAction, selectedHandCards, toggleCardSel
           <Box
             sx={{
               // backgroundColor: 'lightblue',
+              marginTop: '-10vh',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -136,19 +137,22 @@ const MainSection = ({ gameState, handleAction, selectedHandCards, toggleCardSel
         </Grid>
 
         {/* Row 5 */}
-        <Grid item sx={{ flexGrow: 1, overflow: 'auto', minWidth: '300px', minHeight: '10%' }}>
-          <Box
-            sx={{
-              // backgroundColor: 'lightgray',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              height: '100%',
-            }}
-          >
-            <Hand gameState={gameState} playerID={gameState.youPlayerID} handCards={revealedPlayerCards} handleAction={handleAction} />
-          </Box>
-        </Grid>
+        {gameState.turnPlayerID === gameState.youPlayerID && (
+          <Grid item sx={{ flexGrow: 1, overflow: 'auto', minWidth: '300px', minHeight: '10%' }}>
+            <Box
+              sx={{
+                // backgroundColor: 'lightgray',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: '100%',
+              }}
+            >
+              <Hand gameState={gameState} playerID={gameState.youPlayerID} handCards={revealedPlayerCards} handleAction={handleAction} />
+            </Box>
+          </Grid>
+        )}
+        
         <TurnInfo 
           gameState={gameState}
           handleAction={handleAction}

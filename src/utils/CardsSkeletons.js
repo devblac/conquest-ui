@@ -1,5 +1,6 @@
 export const cardSkeletons = {
     treasure: `${process.env.PUBLIC_URL}/img/treasure-basic.webp`,
+    curse: `${process.env.PUBLIC_URL}/img/curse-basic.webp`,
     victory: `${process.env.PUBLIC_URL}/img/victory-basic.webp`,
     action: `${process.env.PUBLIC_URL}/img/action.webp`,
     'action-reaction': `${process.env.PUBLIC_URL}/img/action-reaction.webp`,

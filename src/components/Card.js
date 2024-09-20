@@ -18,8 +18,8 @@ const Card = ({ id, displayName, description, treasuresCost, cardType, isReveale
     return (
         <Box
             sx={{
-                width: '11vh',
-                height: '17vh',
+                width: '14vh',
+                height: '20vh',
                 border: '3px solid black',
                 borderRadius: '8px',
                 boxShadow: isRevealed ? '0px 0px 12px rgba(0, 0, 0, 0.2)' : '0px 0px 5px rgba(0, 0, 0, 0.1)',
@@ -29,7 +29,7 @@ const Card = ({ id, displayName, description, treasuresCost, cardType, isReveale
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                backgroundColor: '#fff',
+                backgroundColor: 'black',
                 backgroundImage: `url(${skeleton})`,
                 backgroundSize: 'contain',
                 backgroundPosition: 'top',
@@ -46,7 +46,7 @@ const Card = ({ id, displayName, description, treasuresCost, cardType, isReveale
             onClick={handleAction ? handleAction : null}
         >
             {/* Remaining Cards Count in the top-left corner */}
-            {remainingCount !== undefined && (
+            {/* {remainingCount !== undefined && (
                 <Typography
                     variant="caption"
                     sx={{
@@ -65,7 +65,7 @@ const Card = ({ id, displayName, description, treasuresCost, cardType, isReveale
                 >
                     {remainingCount}
                 </Typography>
-            )}
+            )} */}
 
             {/* Card Image if it belongs to the player, even if unrevealed */}
             {cardImageVisibility && (
@@ -74,30 +74,31 @@ const Card = ({ id, displayName, description, treasuresCost, cardType, isReveale
                     src={src}
                     alt={displayName}
                     sx={{
-                        width: '80px',
-                        height: '80px',
+                        position: 'absolute',
+                        top: '2.6vh',
+                        left: '1.3vh',
+                        width: '10.5vh',
+                        height: '14vh',
                         objectFit: 'cover',
-                        borderRadius: '4px',
-                        marginBottom: '8px',
                         opacity: 1
                     }}
                 />
             )}
 
             {/* Display Name of Card */}
-            <Typography variant="h6" sx={{ textAlign: 'center', color: '#333', fontSize: '13px', fontWeight: 'bold', marginTop: '4px' }}>
+            <Typography variant="h6" sx={{ textAlign: 'center', color: '#333', fontSize: '1.6vh', fontWeight: 'bold', marginTop: '0.3vh' }}>
                 {displayName}
             </Typography>
 
             {/* Card Type and Cost */}
-            <Typography variant="body2" sx={{ textAlign: 'center', color: '#666', fontSize: '10px', marginTop: '2px' }}>
+            {/* <Typography variant="body2" sx={{ textAlign: 'center', color: '#666', fontSize: '10px', marginTop: '2px' }}>
                 {cardType.charAt(0).toUpperCase() + cardType.slice(1)} - Cost: {treasuresCost}
-            </Typography>
+            </Typography> */}
 
             {/* Card Description */}
-            <Typography variant="caption" sx={{ textAlign: 'center', color: '#777', fontSize: '9px', fontStyle: 'italic', marginTop: '4px' }}>
+            {/* <Typography variant="caption" sx={{ textAlign: 'center', color: '#777', fontSize: '9px', fontStyle: 'italic', marginTop: '4px' }}>
                 {description}
-            </Typography>
+            </Typography> */}
         </Box>
     );
 };

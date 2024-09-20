@@ -3,9 +3,19 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid2';
 import RoundLogItem from '../components/RoundLogItem';
 import Typography from '@mui/material/Typography';
+import { useEffect, useRef } from 'react';
 
 const RightColumn = ({ gameState, handleAction }) => {
   const { roundsLog } = gameState;
+
+  const feedRef = useRef(null);
+
+  useEffect(() => {
+    // Scroll to the bottom whenever feedItems change
+    if (feedRef.current) {
+      feedRef.current.scrollTop = feedRef.current.scrollHeight;
+    }
+  }, [roundsLog]); // Rerun effect when feedItems update
 
   return (
     <Box sx={{ width: '100%', height: '100%', margin: '0' }}>
@@ -23,6 +33,7 @@ const RightColumn = ({ gameState, handleAction }) => {
           >
 
             <Box
+              ref={feedRef}
               sx={{
                 width: '100%', // Increased the width
                 height: '100%',

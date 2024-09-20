@@ -23,10 +23,12 @@ const Hand = ({ gameState, playerID, handCards, handleAction, toggleCardSelectio
         }
     }
 
+    const marginLeft = handCards.length <= 5 ? 0 : -(handCards.length - 5);
+
     return (
-    <Grid container spacing={1} sx={{ justifyContent: 'center', overflow: 'hidden' }}>
-      {handCards.map((handCard) => (
-        <Grid item key={handCard.index} sx={{ flexShrink: 0 }}>
+    <Grid container sx={{ justifyContent: 'center', overflow: 'hidden' }}>
+      {handCards.map((handCard, i) => (
+        <Grid item key={handCard.index} sx={{ flexShrink: 0, marginLeft: `${i === 0 ? 0 : marginLeft}vh` }}>
           <Card 
             id={handCard.card.id}
             displayName={handCard.card.displayName}
