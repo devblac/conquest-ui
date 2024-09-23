@@ -1,7 +1,7 @@
 
 // Normally React manages state, but in this case the game state is managed by the backend.
 // This file is the only connection between React and the backend.
-export class GameStateManager {
+export class SinglePlayerGameStateManager {
     constructor() {
         this.gameState = null;
 
@@ -10,6 +10,8 @@ export class GameStateManager {
 
         // These are selected cards used on the ConquestDialog component.
         this.conquestDialogSelectedCards = [];
+
+        this.renderTrigger = () => {};
     }
 
     start() {
@@ -17,6 +19,10 @@ export class GameStateManager {
         return this.gameState;
     }
 
+
+    setRenderTrigger(renderTrigger) {
+        this.renderTrigger = renderTrigger;
+    }
 
     // Run action is called by the FE upon a `handleAction` event, so the main player
     // calls it upon clicking on something.

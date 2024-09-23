@@ -62,17 +62,12 @@ export const Game = ({ manager }) => {
   }, [gameState.isGameEnded]);
 
   useEffect(() => {
-    if (gameState.possibleActions.length === 1 && gameState.possibleActions[0].name === "confirm_round_finished" && !gameState.isGameEnded) {
-      // This is because the bot has to confirm the round finished too, or possibly reveal envido score too.
-      // Either it did, and then this should be a no-op, or it didn't and this is useful.
-      // This action produces no sounds or visual changes so we just run the action alone.
-      manager.runBotAction();
-      manager.runBotAction();
+    manager.setRenderTrigger(setTrigger);
+  }, []);
 
-      const modalOverlay = document.getElementById('roundOverModalOverlay');
-      modalOverlay.classList.add('show');
-    }
-  }, [gameState]);
+  if (!gameState || !gameState.players) {
+    return null;
+  }
 
   return (
     <Box sx={{ width: '100%', height: '100vh', flexGrow: 1 }}>
