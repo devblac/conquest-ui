@@ -24,7 +24,7 @@ const Card = ({ id, displayName, description, treasuresCost, cardType, isReveale
                 borderRadius: '8px',
                 boxShadow: isRevealed ? '0px 0px 12px rgba(0, 0, 0, 0.2)' : '0px 0px 5px rgba(0, 0, 0, 0.1)',
                 // backgroundImage: `url(${src})`,
-                // padding: '8px',
+                // padding: '8px', Why this has changed? 
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
