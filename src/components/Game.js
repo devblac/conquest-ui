@@ -99,6 +99,7 @@ export const Game = ({ manager }) => {
           sadButton={{ label: "No", handleAction: () => handleAction(noAction(gameState)) }}
           handCards={gameState.players[gameState.youPlayerID].hand.handCards.filter(handCard => handCard.card.id === "moat")}
           setTrigger={setTrigger}
+          gameState={gameState}
         />
         {/* Library modal */}
         <ConquestDialog
@@ -108,6 +109,7 @@ export const Game = ({ manager }) => {
           sadButton={{ label: "No", handleAction: () => handleAction(keepAction(gameState, false)) }}
           handCards={keepAction(gameState, true).hand_card ? [keepAction(gameState, true).hand_card] : []}
           setTrigger={setTrigger}
+          gameState={gameState}
         />
         {/* Bandit modal */}
         <ConquestDialog
@@ -136,6 +138,7 @@ export const Game = ({ manager }) => {
           exactly_n={1}
           conquestDialogSelectedCards={manager.conquestDialogSelectedCards}
           setConquestDialogSelectedCards={(cs) => manager.setConquestDialogSelectedCards(cs)}
+          gameState={gameState}
         />
         {/* Vassal modal */}
         <ConquestDialog
@@ -145,6 +148,7 @@ export const Game = ({ manager }) => {
           sadButton={{ label: "No", handleAction: () => handleAction(getActionOfKinds(gameState, ['no'])) }}
           handCards={[gameState.players[gameState.youPlayerID].hand.handCards[gameState.players[gameState.youPlayerID].hand.handCards.length - 1]]}
           setTrigger={setTrigger}
+          gameState={gameState}
         />
         {/* Harbinger modal */}
         <ConquestDialog
@@ -159,6 +163,43 @@ export const Game = ({ manager }) => {
           exactly_n={1}
           conquestDialogSelectedCards={manager.conquestDialogSelectedCards}
           setConquestDialogSelectedCards={(cs) => manager.setConquestDialogSelectedCards(cs)}
+          gameState={gameState}
+        />
+        {/* Sentry modal (trash cards) */}
+        <ConquestDialog
+          open={gameState.actionInProgress && gameState.actionInProgress.state === 'state_sentry_trash_cards'}
+          dialogTitle="Select cards to trash"
+          happyButton={{ label: "Trash", handleAction: () => handleAction(getActionOfKinds(gameState, ['trash_cards'])) }}
+          handCards={gameState.players[gameState.youPlayerID].hand.handCards.slice(-2)}
+          setTrigger={setTrigger}
+          canSelectCards={true}
+          up_to_n={2}
+          conquestDialogSelectedCards={manager.conquestDialogSelectedCards}
+          setConquestDialogSelectedCards={(cs) => manager.setConquestDialogSelectedCards(cs)}
+          gameState={gameState}
+        />
+        {/* Sentry modal (discard cards) */}
+        <ConquestDialog
+          open={gameState.actionInProgress && gameState.actionInProgress.state === 'state_sentry_discard_cards'}
+          dialogTitle="Select cards to discard"
+          happyButton={{ label: "Discard", handleAction: () => handleAction(getActionOfKinds(gameState, ['discard_cards'])) }}
+          handCards={gameState.players[gameState.youPlayerID].hand.handCards.slice(-2)}
+          setTrigger={setTrigger}
+          canSelectCards={true}
+          up_to_n={2}
+          conquestDialogSelectedCards={manager.conquestDialogSelectedCards}
+          setConquestDialogSelectedCards={(cs) => manager.setConquestDialogSelectedCards(cs)}
+          gameState={gameState}
+        />
+        {/* Sentry modal (reorder cards) */}
+        <ConquestDialog
+          open={gameState.actionInProgress && gameState.actionInProgress.state === 'state_sentry_reorder_cards'}
+          dialogTitle="Reorder cards"
+          happyButton={{ label: "Reorder", handleAction: () => handleAction(getActionOfKinds(gameState, ['discard_cards'])) }}
+          handCards={gameState.players[gameState.youPlayerID].hand.handCards.slice(-2)}
+          setTrigger={setTrigger}
+          enableReorder={false}
+          gameState={gameState}
         />
       </Grid>
     </Box>

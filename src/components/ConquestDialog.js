@@ -5,6 +5,7 @@ import Card from './Card';
 const ConquestDialog = ({ 
   open, 
   dialogTitle, 
+  dialogSubtitle,
   happyButton, // Buttons have a `label` and a `handleAction`
   sadButton, 
   cards, // Pass either cards or handCards, but not both.
@@ -15,7 +16,9 @@ const ConquestDialog = ({
   setTrigger, // Pass React's re-render function, so that on card click, the state is updated.
   conquestDialogSelectedCards, // Pass the selected cards
   setConquestDialogSelectedCards, // Pass the function that updates the selected cards
-  canSelectCards // If not passed or false, no cards can be selected
+  canSelectCards, // If not passed or false, no cards can be selected
+  enableReorder, // If true, this enables the reordering feature (there MUST be 2 cards)
+  gameState,
 }) => {
   conquestDialogSelectedCards = conquestDialogSelectedCards || [];
 
@@ -30,6 +33,10 @@ const ConquestDialog = ({
     ...card,
     index: index
   }));
+
+  if (enableReorder && resolvedCards.length != 2) {
+    throw new Error("enableReorder is only supported for 2 cards");
+  }
 
   const toggleCardSelection = (card, {up_to_n, exactly_n, until_n_left}) => {
     // Only allow selecting cards if the game is in a state where you can select cards
@@ -62,11 +69,25 @@ const ConquestDialog = ({
     // Update the selected cards in the manager, and trigger a re-render
     setTrigger(setConquestDialogSelectedCards(toggle(conquestDialogSelectedCards, card)));
   };
+
+  const reverseCards = () => {
+    if (cards && cards.length) {
+      cards.reverse();
+    }
+    if (handCards && handCards.length) {
+      handCards.reverse();
+    }
+    setTrigger(cards || handCards);
+  };
   
   if (until_n_left) {
     exactly_n = resolvedCards.length - until_n_left;
   }
-  const areButtonsEnabled = !canSelectCards || (exactly_n > 0 && exactly_n === conquestDialogSelectedCards.length);
+  const areButtonsEnabled = !canSelectCards || (exactly_n > 0 && exactly_n === conquestDialogSelectedCards.length) || (up_to_n > 0 && up_to_n >= conquestDialogSelectedCards.length);
+
+  if (enableReorder) {
+    dialogSubtitle = "(click cards to reverse order)";
+  }
 
   return (
     <Modal
@@ -99,6 +120,9 @@ const ConquestDialog = ({
         <Typography id="moat-modal-title" variant="h6" component="h2" sx={{ color: 'white', mb: 2 }}>
           {dialogTitle}
         </Typography>
+        {dialogSubtitle && <Typography id="moat-modal-subtitle" variant="body1" component="h2" sx={{ color: 'white', mb: 2 }}>
+          {dialogSubtitle}
+        </Typography>}
         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
           {resolvedCards.map((card) => (
             <Card
@@ -107,8 +131,9 @@ const ConquestDialog = ({
               displayName={card.displayName}
               cardType={card.cardType}
               isRevealed={true}
-              handleAction={() => toggleCardSelection(card, {up_to_n, exactly_n, until_n_left})}
+              handleAction={() => enableReorder ? reverseCards() : toggleCardSelection(card, {up_to_n, exactly_n, until_n_left})}
               isSelected={conquestDialogSelectedCards.map(hc => hc.index).includes(card.index)}
+              gameState={gameState}
             />
           ))}
         </Box>
