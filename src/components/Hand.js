@@ -23,19 +23,28 @@ const Hand = ({ gameState, playerID, handCards, handleAction, toggleCardSelectio
         }
     }
 
-    //const marginLeft1 = handCards.length <= 5 ? 0 : -(handCards.length - 5);
-    const marginLeft = handCards.length <= 5 ? '1vh' : `-${(handCards.length - 5) / handCards.length}vh`; // Adjust negative margin for overlapping
-
+    const calculateMarginLeft = (i, handCards) => {
+      if (i === 0) {
+        return '0vh';
+      }
+      if (playerID !== gameState.youPlayerID) {
+        return '-11vh';
+      }
+      if (handCards[i].card.id === handCards[i - 1].card.id) {
+        return `-11vh`;
+      }
+      return `0vh`;
+    }
 
     return (
-    <Grid container sx={{ justifyContent: 'center', overflow: 'hidden', gap: '1vh' }}>
+    <Grid container sx={{ justifyContent: 'center', overflow: 'hidden', gap: '0.5vh' }}>
       {handCards.map((handCard, i) => (
         <Grid 
           item
           key={handCard.index} 
           sx={{
             flexShrink: 0,
-            marginLeft: `${i === 0 ? 0 : marginLeft}`,
+            marginLeft: calculateMarginLeft(i, handCards),
             zIndex: handCards.length - i // Ensure proper z-index layering for cards
           }}
         >
