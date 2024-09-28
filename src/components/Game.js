@@ -92,7 +92,7 @@ export const Game = ({ manager }) => {
 
         </Grid>
         {/* Moat modal */}
-        <ConquestDialog
+        {hasActionsOfKinds(gameState, ["yes", "no"]) && <ConquestDialog
           open={hasMoatActions(gameState)}
           dialogTitle="Use Moat?"
           happyButton={{ label: "Yes", handleAction: () => handleAction(yesAction(gameState)) }}
@@ -100,9 +100,9 @@ export const Game = ({ manager }) => {
           handCards={gameState.players[gameState.youPlayerID].hand.handCards.filter(handCard => handCard.card.id === "moat")}
           setTrigger={setTrigger}
           gameState={gameState}
-        />
+        />}
         {/* Library modal */}
-        <ConquestDialog
+        {hasActionsOfKinds(gameState, ["keep_card"]) && <ConquestDialog
           open={hasActionsOfKinds(gameState, ["keep_card"])}
           dialogTitle="Keep this action card?"
           happyButton={{ label: "Yes", handleAction: () => handleAction(keepAction(gameState, true)) }}
@@ -110,9 +110,9 @@ export const Game = ({ manager }) => {
           handCards={keepAction(gameState, true).hand_card ? [keepAction(gameState, true).hand_card] : []}
           setTrigger={setTrigger}
           gameState={gameState}
-        />
+        />}
         {/* Bandit modal */}
-        <ConquestDialog
+        {hasActionsOfKinds(gameState, ["discard_and_trash_cards"]) && <ConquestDialog
           open={hasActionsOfKinds(gameState, ["discard_and_trash_cards"])}
           dialogTitle="Choose which treasure card to trash"
           happyButton={{ label: "Trash selected", handleAction: () => {
@@ -139,9 +139,9 @@ export const Game = ({ manager }) => {
           conquestDialogSelectedCards={manager.conquestDialogSelectedCards}
           setConquestDialogSelectedCards={(cs) => manager.setConquestDialogSelectedCards(cs)}
           gameState={gameState}
-        />
+        />}
         {/* Vassal modal */}
-        <ConquestDialog
+        {hasActionsOfKinds(gameState, ['yes', 'no']) && <ConquestDialog
           open={hasVassalActions(gameState)}
           dialogTitle="Play this action card?"
           happyButton={{ label: "Yes", handleAction: () => handleAction(getActionOfKinds(gameState, ['yes'])) }}
@@ -149,9 +149,9 @@ export const Game = ({ manager }) => {
           handCards={[gameState.players[gameState.youPlayerID].hand.handCards[gameState.players[gameState.youPlayerID].hand.handCards.length - 1]]}
           setTrigger={setTrigger}
           gameState={gameState}
-        />
+        />}
         {/* Harbinger modal */}
-        <ConquestDialog
+        {hasActionsOfKinds(gameState, ['move_discarded_to_deck']) && <ConquestDialog
           open={hasActionsOfKinds(gameState, ['move_discarded_to_deck'])}
           dialogTitle="Which card do you want to topdeck?"
           happyButton={{ label: "Topdeck", handleAction: () => handleAction(moveDiscardedToDeckAction(gameState, manager.conquestDialogSelectedCards[0])) }}
@@ -164,9 +164,9 @@ export const Game = ({ manager }) => {
           conquestDialogSelectedCards={manager.conquestDialogSelectedCards}
           setConquestDialogSelectedCards={(cs) => manager.setConquestDialogSelectedCards(cs)}
           gameState={gameState}
-        />
+        />}
         {/* Sentry modal (trash cards) */}
-        <ConquestDialog
+        {hasActionsOfKinds(gameState, ['trash_cards']) && <ConquestDialog
           open={gameState.actionInProgress && gameState.actionInProgress.state === 'state_sentry_trash_cards'}
           dialogTitle="Select cards to trash"
           happyButton={{ label: "Trash", handleAction: () => handleAction(getActionOfKinds(gameState, ['trash_cards'])) }}
@@ -177,9 +177,9 @@ export const Game = ({ manager }) => {
           conquestDialogSelectedCards={manager.conquestDialogSelectedCards}
           setConquestDialogSelectedCards={(cs) => manager.setConquestDialogSelectedCards(cs)}
           gameState={gameState}
-        />
+        />}
         {/* Sentry modal (discard cards) */}
-        <ConquestDialog
+        {hasActionsOfKinds(gameState, ['discard_cards']) && <ConquestDialog
           open={gameState.actionInProgress && gameState.actionInProgress.state === 'state_sentry_discard_cards'}
           dialogTitle="Select cards to discard"
           happyButton={{ label: "Discard", handleAction: () => handleAction(getActionOfKinds(gameState, ['discard_cards'])) }}
@@ -190,9 +190,9 @@ export const Game = ({ manager }) => {
           conquestDialogSelectedCards={manager.conquestDialogSelectedCards}
           setConquestDialogSelectedCards={(cs) => manager.setConquestDialogSelectedCards(cs)}
           gameState={gameState}
-        />
+        />}
         {/* Sentry modal (reorder cards) */}
-        <ConquestDialog
+        {hasActionsOfKinds(gameState, ['reorder_cards']) && <ConquestDialog
           open={gameState.actionInProgress && gameState.actionInProgress.state === 'state_sentry_reorder_cards'}
           dialogTitle="Reorder cards"
           happyButton={{ label: "Reorder", handleAction: () => handleAction(getActionOfKinds(gameState, ['discard_cards'])) }}
@@ -200,7 +200,7 @@ export const Game = ({ manager }) => {
           setTrigger={setTrigger}
           enableReorder={false}
           gameState={gameState}
-        />
+        />}
       </Grid>
     </Box>
   );
@@ -208,39 +208,40 @@ export const Game = ({ manager }) => {
 
 const canSelectCards = (gameState) => {
   return gameState.possibleActions.some(action =>
-    action.kind === "discard_cards" ||
-    action.kind === "trash_cards"
+    (action.kind === "discard_cards" ||
+    action.kind === "trash_cards") &&
+    action.playerID === gameState.youPlayerID
   );
 }
 
 const hasActionsOfKinds = (gameState, kinds) => {
-  return gameState.possibleActions.some(action => kinds.includes(action.kind));
+  return gameState.possibleActions.some(action => kinds.includes(action.kind) && action.playerID === gameState.youPlayerID);
 }
 
 const getActionOfKinds = (gameState, kinds) => {
-  return gameState.possibleActions.find(action => kinds.includes(action.kind));
+  return gameState.possibleActions.find(action => kinds.includes(action.kind) && action.playerID === gameState.youPlayerID);
 }
 
 function hasMoatActions(gameState) {
-  return gameState.possibleActions.some(action => action.kind === "yes" && action.context === "uses moat") &&
-    gameState.possibleActions.some(action => action.kind === "no");
+  return gameState.possibleActions.some(action => action.kind === "yes" && action.context === "uses moat" && action.playerID === gameState.youPlayerID) &&
+    gameState.possibleActions.some(action => action.kind === "no" && action.playerID === gameState.youPlayerID);
 }
 
 function hasVassalActions(gameState) {
-  return gameState.possibleActions.some(action => action.kind === "yes" && action.context === "plays action card") &&
-    gameState.possibleActions.some(action => action.kind === "no");
+  return gameState.possibleActions.some(action => action.kind === "yes" && action.context === "plays action card" && action.playerID === gameState.youPlayerID) &&
+    gameState.possibleActions.some(action => action.kind === "no" && action.playerID === gameState.youPlayerID);
 }
 
 function yesAction(gameState) {
-  return gameState.possibleActions.find(action => action.kind === "yes");
+  return gameState.possibleActions.find(action => action.kind === "yes" && action.playerID === gameState.youPlayerID);
 }
 
 function noAction(gameState) {
-  return gameState.possibleActions.find(action => action.kind === "no");
+  return gameState.possibleActions.find(action => action.kind === "no" && action.playerID === gameState.youPlayerID);
 }
 
 function keepAction(gameState, withKeepValue) {
-  const action = gameState.possibleActions.find(action => action.kind === "keep_card");
+  const action = gameState.possibleActions.find(action => action.kind === "keep_card" && action.playerID === gameState.youPlayerID);
   if (!action) {
     return {};
   }
@@ -249,7 +250,7 @@ function keepAction(gameState, withKeepValue) {
 }
 
 function discardAndTrashCardsAction(gameState, withDiscardHandCard, withTrashHandCard) {
-  const action = gameState.possibleActions.find(action => action.kind === "discard_and_trash_cards");
+  const action = gameState.possibleActions.find(action => action.kind === "discard_and_trash_cards" && action.playerID === gameState.youPlayerID);
   if (!action) {
     return {};
   }
@@ -259,7 +260,7 @@ function discardAndTrashCardsAction(gameState, withDiscardHandCard, withTrashHan
 }
 
 function moveDiscardedToDeckAction(gameState, withCard) {
-  const action = gameState.possibleActions.find(action => action.kind === "move_discarded_to_deck");
+  const action = gameState.possibleActions.find(action => action.kind === "move_discarded_to_deck" && action.playerID === gameState.youPlayerID);
   if (!action) {
     return {};
   }
