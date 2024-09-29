@@ -8,6 +8,7 @@ import LeftColumn from '../grid/LeftColumn';
 import MainSection from '../grid/MainSection';
 import RightColumn from '../grid/RightColumn';
 import ConquestDialog from './ConquestDialog';
+import { playAudio, YOUR_TURN } from '../audio';
 
 export const Game = ({ manager }) => {
   const [trigger, setTrigger] = useState(0);
@@ -64,6 +65,12 @@ export const Game = ({ manager }) => {
   useEffect(() => {
     manager.setRenderTrigger(setTrigger);
   }, []);
+
+  useEffect(() => {
+    if (isRoundStart(gameState)) {
+      playAudio(YOUR_TURN);
+    }
+  }, [gameState]);
 
   if (!gameState || !gameState.players) {
     return null;
@@ -266,4 +273,9 @@ function moveDiscardedToDeckAction(gameState, withCard) {
   }
   action.card = withCard;
   return action;
+}
+
+function isRoundStart(gameState) {
+  const lastRoundsActions = ((gameState.roundsLog[gameState.roundsLog.length - 1] || {actions: []}).actions || []);
+  return gameState.turnPlayerID === gameState.youPlayerID && lastRoundsActions.filter(a => a.playerID === gameState.youPlayerID).length === 0;
 }
