@@ -8,6 +8,7 @@ import LeftColumn from '../grid/LeftColumn';
 import MainSection from '../grid/MainSection';
 import RightColumn from '../grid/RightColumn';
 import ConquestDialog from './ConquestDialog';
+import { playAudio, YOUR_TURN } from '../audio';
 
 export const Game = ({ manager }) => {
   const [trigger, setTrigger] = useState(0);
@@ -64,6 +65,12 @@ export const Game = ({ manager }) => {
   useEffect(() => {
     manager.setRenderTrigger(setTrigger);
   }, []);
+
+  useEffect(() => {
+    if (isRoundStart(gameState)) {
+      playAudio(YOUR_TURN);
+    }
+  }, [gameState]);
 
   if (!gameState || !gameState.players) {
     return null;
@@ -174,39 +181,40 @@ export const Game = ({ manager }) => {
 
 const canSelectCards = (gameState) => {
   return gameState.possibleActions.some(action =>
-    action.kind === "discard_cards" ||
-    action.kind === "trash_cards"
+    (action.kind === "discard_cards" ||
+    action.kind === "trash_cards") &&
+    action.playerID === gameState.youPlayerID
   );
 }
 
 const hasActionsOfKinds = (gameState, kinds) => {
-  return gameState.possibleActions.some(action => kinds.includes(action.kind));
+  return gameState.possibleActions.some(action => kinds.includes(action.kind) && action.playerID === gameState.youPlayerID);
 }
 
 const getActionOfKinds = (gameState, kinds) => {
-  return gameState.possibleActions.find(action => kinds.includes(action.kind));
+  return gameState.possibleActions.find(action => kinds.includes(action.kind) && action.playerID === gameState.youPlayerID);
 }
 
 function hasMoatActions(gameState) {
-  return gameState.possibleActions.some(action => action.kind === "yes" && action.context === "uses moat") &&
-    gameState.possibleActions.some(action => action.kind === "no");
+  return gameState.possibleActions.some(action => action.kind === "yes" && action.context === "uses moat" && action.playerID === gameState.youPlayerID) &&
+    gameState.possibleActions.some(action => action.kind === "no" && action.playerID === gameState.youPlayerID);
 }
 
 function hasVassalActions(gameState) {
-  return gameState.possibleActions.some(action => action.kind === "yes" && action.context === "plays action card") &&
-    gameState.possibleActions.some(action => action.kind === "no");
+  return gameState.possibleActions.some(action => action.kind === "yes" && action.context === "plays action card" && action.playerID === gameState.youPlayerID) &&
+    gameState.possibleActions.some(action => action.kind === "no" && action.playerID === gameState.youPlayerID);
 }
 
 function yesAction(gameState) {
-  return gameState.possibleActions.find(action => action.kind === "yes");
+  return gameState.possibleActions.find(action => action.kind === "yes" && action.playerID === gameState.youPlayerID);
 }
 
 function noAction(gameState) {
-  return gameState.possibleActions.find(action => action.kind === "no");
+  return gameState.possibleActions.find(action => action.kind === "no" && action.playerID === gameState.youPlayerID);
 }
 
 function keepAction(gameState, withKeepValue) {
-  const action = gameState.possibleActions.find(action => action.kind === "keep_card");
+  const action = gameState.possibleActions.find(action => action.kind === "keep_card" && action.playerID === gameState.youPlayerID);
   if (!action) {
     return {};
   }
@@ -215,7 +223,7 @@ function keepAction(gameState, withKeepValue) {
 }
 
 function discardAndTrashCardsAction(gameState, withDiscardHandCard, withTrashHandCard) {
-  const action = gameState.possibleActions.find(action => action.kind === "discard_and_trash_cards");
+  const action = gameState.possibleActions.find(action => action.kind === "discard_and_trash_cards" && action.playerID === gameState.youPlayerID);
   if (!action) {
     return {};
   }
@@ -225,10 +233,15 @@ function discardAndTrashCardsAction(gameState, withDiscardHandCard, withTrashHan
 }
 
 function moveDiscardedToDeckAction(gameState, withCard) {
-  const action = gameState.possibleActions.find(action => action.kind === "move_discarded_to_deck");
+  const action = gameState.possibleActions.find(action => action.kind === "move_discarded_to_deck" && action.playerID === gameState.youPlayerID);
   if (!action) {
     return {};
   }
   action.card = withCard;
   return action;
+}
+
+function isRoundStart(gameState) {
+  const lastRoundsActions = ((gameState.roundsLog[gameState.roundsLog.length - 1] || {actions: []}).actions || []);
+  return gameState.turnPlayerID === gameState.youPlayerID && lastRoundsActions.filter(a => a.playerID === gameState.youPlayerID).length === 0;
 }
